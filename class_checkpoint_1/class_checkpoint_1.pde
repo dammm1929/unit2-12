@@ -1,6 +1,6 @@
 mover[] mymovers;
 int n = 10;
-float r, g, b;
+
 
 
 void setup() {
@@ -8,9 +8,6 @@ void setup() {
   background(#A0775F);
   mymovers = new mover[n];
   for (int i = 0; i < n; i++) {
-    r = random(0,255);
-    g = random(0,255);
-    b = random(0,255);
     mymovers[i] = new mover();
   }
   

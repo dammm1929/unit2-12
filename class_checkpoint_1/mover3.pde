@@ -3,7 +3,7 @@
 //  //instance variables
 //  float x, y;
   
-//  //constructor
+//  //constructor 
 //  mover() {
 //   x = width/2;
 //   y = height/2; 

@@ -1,24 +1,22 @@
 //class mover {
-//  float r, g, b;
+  
 //  //instance variables
 //  float x, y;
+//  float r;
   
-//  //constructor 
+//  //constructor
 //  mover() {
-//    r = random(0,255);
-//    g = random(0,255);
-//    b = random(0,255);
+//    r = random(30,130);
 //   x = width/2;
 //   y = height/2; 
 //  }
   
 //  //hehaviour functions
 //  void show() {
-    
 //    stroke(0);
-//    fill(r, g, b);
+//    fill(255);
 //    strokeWeight(5);
-//    circle(x,y,100);
+//    circle(x,y,r);
 //  }
 //  void act() {
 //    x += random(-2,2);
