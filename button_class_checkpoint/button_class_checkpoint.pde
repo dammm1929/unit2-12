@@ -1,15 +1,16 @@
 boolean mouseReleased;
 boolean waspressed;
 
+
 button[] mybuttons;
 
 void setup() {
   size(600,600);
   mybuttons = new button[4];
-  mybuttons[0] = new button("text", 100,100,100,50, #E87E7E, #743F3F);
-  mybuttons[1] = new button("text", 300,100,150,70, #E721E8, #983398);
-  mybuttons[2] = new button("text", 100,300,130,90, #31DB65, #349D54);
-  mybuttons[3] = new button("text", 300,500,180,70, #FFAC12, #CB9733);
+  mybuttons[0] = new button("red", 100,100,100,50, #E87E7E, #743F3F);
+  mybuttons[1] = new button("pink", 300,150,150,70, #FF6AF5, #FFA7F9);
+  mybuttons[2] = new button("green", 140,350,130,90, #31DB65, #349D54);
+  mybuttons[3] = new button("orange", 500,500,180,70, #FFAC12, #CB9733);
 }
 
 
@@ -23,7 +24,7 @@ void draw() {
     background(#E87E7E);
   }
   if (mybuttons[1].clicked) {
-    background(#E721E8);
+    background(#FFA7F9);
   }
   if (mybuttons[2].clicked) {
     background(#31DB65);

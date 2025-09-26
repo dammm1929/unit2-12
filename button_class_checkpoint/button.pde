@@ -3,6 +3,8 @@ class button {
   boolean clicked;
   color tactile, normal;
   String text;
+  boolean touchingmouse;
+  
   
   // constructor
   button(String t, int _x, int _y, int _w, int _h, color norm, color tact) {
@@ -18,8 +20,19 @@ class button {
   
   // behaviour function
   void show() { // make the button show up and work
-    rectMode(CENTER); // rect colour and stuff
+    drawRect();
+    drawLabel();
+    checkForClick();
     if (mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2) {
+      touchingmouse = true;
+    } else {
+      touchingmouse = false;
+    }
+  }
+  
+  void drawRect() {
+    rectMode(CENTER); // rect colour and stuff
+    if (touchingmouse) {
       fill(tactile);
     } else {
       fill(normal);
@@ -27,24 +40,24 @@ class button {
     stroke(0);
     strokeWeight(4);
     rect(x, y, w, h, 10);
-    
+  }
+  
+  void drawLabel() {
     textAlign(CENTER, CENTER); // text colour and stuff
-    if (mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2) {
+    if (touchingmouse) {
       fill(normal);
     } else {
       fill(tactile);
     }
     textSize(w/4);
     text(text, x, y);
-    
-    if (mouseReleased && mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2) {
+  }
+  
+  void checkForClick() {
+    if (mouseReleased && touchingmouse) {
       clicked = true;
     } else {
       clicked = false;
     }
-  }
-  
-  void act() {
-    
   }
 }
