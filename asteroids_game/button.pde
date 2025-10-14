@@ -21,7 +21,7 @@ class button {
   // behaviour function
   void show() { // make the button show up and work
     drawRect();
-    //drawLabel();
+    drawtext();
     checkForClick();
     if (mouseX > x-w/2 && mouseX < x+w/2 && mouseY > y-h/2 && mouseY < y+h/2) {
       touchingmouse = true;
@@ -40,23 +40,25 @@ class button {
     stroke(255);
     strokeWeight(4);
     rect(x, y, w, h, 10);
-    textFont(retro);
-    fill(255);
-    textSize(w/3);
-    textAlign(CENTER, CENTER);
-    text(text, x, y);
+    //textFont(retro);
+    //fill(255);
+    //textSize(w/3);
+    //textAlign(CENTER, CENTER);
+    //text(text, x, y);
   }
   
-  //void drawLabel() {
-  //  textAlign(CENTER, CENTER); // text colour and stuff
-  //  if (touchingmouse) {
-  //    fill(normal);
-  //  } else {
-  //    fill(tactile);
-  //  }
-  //  textSize(w/4);
-  //  text(text, x, y);
-  //}
+  void drawtext() {
+    textFont(retro);
+    textAlign(CENTER, CENTER); // text colour and stuff
+    if (touchingmouse) {
+      fill(normal);
+    } else {
+      fill(tactile);
+    }
+    textSize(w/4);
+    fill(255);
+    text(text, x, y);
+  }
   
   void checkForClick() {
     if (mouseReleased && touchingmouse) {
