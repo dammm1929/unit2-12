@@ -1,16 +1,17 @@
 // asteroids
-
+import java.util.ArrayList;
 int mode = 3;
 PFont retro;
 boolean pleasedontleave;
 button[] buttons;
-PImage shipper;
-boolean upkey, leftkey, downkey, rightkey;
+boolean upkey, leftkey, downkey, rightkey, spacekey;
 
 ship player1; 
 
+// list of bullets
+ArrayList<gameobject> objects;
+
 void setup() {
-  shipper = loadImage("shipper-removebg-preview.png");
   size(1000,1000);
   buttons = new button[4];
   buttons[0] = new button("Play",500,400,350,150, 0, #4B4A4A); 
@@ -18,12 +19,15 @@ void setup() {
   buttons[2] = new button("Leave :(",500,800,350,150, 0, #4B4A4A); 
   buttons[3] = new button("go back", 170,850, 150,75, 0, #4B4A4A);
   retro = createFont("Eight-Bit Madness.ttf", 70);
+  
+  objects = new ArrayList(); 
   player1 = new ship();
+  objects.add(player1);
   
 }
 
 void draw() {
-  
+  print(objects.size());
   click();
   if (mode == 1) {
     intro();

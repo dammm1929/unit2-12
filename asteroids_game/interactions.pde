@@ -3,6 +3,7 @@ void keyPressed() {
   if (key == 'a' || keyCode == LEFT) leftkey = true;
   if (key == 's' || keyCode == DOWN) downkey = true;
   if (key == 'd' || keyCode == RIGHT) rightkey = true;
+  if (key == ' ') spacekey = true;
 }
 
 
@@ -11,5 +12,5 @@ void keyReleased() {
   if (key == 'a' || keyCode == LEFT) leftkey = false;
   if (key == 's' || keyCode == DOWN) downkey = false;
   if (key == 'd' || keyCode == RIGHT) rightkey = false;
-  
+  if (key == ' ') spacekey = false;
 }

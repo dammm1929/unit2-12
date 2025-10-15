@@ -1,18 +1,11 @@
-
-
-class ship {
+class ship extends gameobject { // ship is extending off gameobject
   // instance
-  float x, y, d;
-  float vx, vy;
-  PVector loc;
-  PVector vel;
   PVector dir;
   
   // constructor
   ship() {
-   loc = new PVector(width/2, height/2);
-   vel = new PVector(0,0);
-   dir = new PVector(1,0);
+    super(width/2, height/2, 0, 0);
+    dir = new PVector(0.1,0);
     
     
   }
@@ -43,9 +36,6 @@ class ship {
     line(-18,-3, -18,-11);
     triangle(14,15, 15,22, 5,15);
     triangle(-14,15, -15,22, -5,15);
-    
-    //scale(0.15);
-    //image(shipper, -265,-270); // takes coordinates
   }
   void act() {
     move();
@@ -55,6 +45,7 @@ class ship {
     if (loc.x < 0-10) loc.x = width+9;
     if (loc.y > height+10) loc.y = 0-9;
     if (loc.y < 0-10) loc.y = height+9;
+    
   }
   
   void move() {
@@ -63,9 +54,13 @@ class ship {
     
     if (leftkey) dir.rotate(-radians(3));
     if (rightkey) dir.rotate(radians(3));
+
+    if (vel.x >= 10) vel.setMag(10);
+    if (vel.y >= 10) vel.setMag(10);
+    
   }
   void shoot() {
-    
+    if (spacekey) objects.add(new bullet() );
   }
   void checkforhit() {
     
