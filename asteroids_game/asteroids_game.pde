@@ -4,7 +4,10 @@ int mode = 3;
 PFont retro;
 boolean pleasedontleave;
 button[] buttons;
-boolean upkey, leftkey, downkey, rightkey, spacekey;
+boolean upkey, leftkey, downkey, rightkey, spacekey, shiftkey;
+float fuel = 50;
+float fuelbarx = 200;
+int change = 0;
 
 ship player1; 
 
@@ -22,12 +25,11 @@ void setup() {
   
   objects = new ArrayList(); 
   player1 = new ship();
+  objects.add(new asteroid());
   objects.add(player1);
-  
 }
 
 void draw() {
-  print(objects.size());
   click();
   if (mode == 1) {
     intro();

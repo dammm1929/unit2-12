@@ -2,6 +2,8 @@ class gameobject {
   PVector loc;
   PVector vel;
   int lives;
+  float d;
+  
   // multi constructors. the one that is called is the one that runs
   gameobject(float lx, float ly, float vx, float vy) {
     loc = new PVector(lx, ly);
