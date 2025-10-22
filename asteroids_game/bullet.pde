@@ -8,6 +8,15 @@ class bullet extends gameobject {
     d = 7;
   }
   
+  //bullet(float x, float y) { // enemy bullets
+  //  super(enemy.loc.copy(), enemy.dir.copy());
+  //  vel.setMag(10);
+  //  vel.add(player1.vel);
+  //  timer = 60;
+  //  d = 10;
+    
+  //}
+  
   void show() {
    fill(255);
    stroke(255);
@@ -18,10 +27,5 @@ class bullet extends gameobject {
     loc.add(vel); 
     timer -= 1;
     if (timer == 0) lives = 0;
-    
-    if (loc.x > width) loc.x = 0;
-    if (loc.x < 0) loc.x = width;
-    if (loc.y > height) loc.y = 0;
-    if (loc.y < 0) loc.y = height;
   }
 }

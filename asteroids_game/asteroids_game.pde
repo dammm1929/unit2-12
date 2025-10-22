@@ -1,6 +1,6 @@
 // asteroids
 import java.util.ArrayList;
-int mode = 3;
+int mode = 1;
 PFont retro;
 boolean pleasedontleave;
 button[] buttons;
@@ -10,6 +10,7 @@ float fuelbarx = 200;
 int change = 0;
 
 ship player1; 
+
 
 // list of bullets
 ArrayList<gameobject> objects;
@@ -25,6 +26,9 @@ void setup() {
   
   objects = new ArrayList(); 
   player1 = new ship();
+  objects.add(new asteroid());
+  objects.add(new asteroid());
+  objects.add(new asteroid());
   objects.add(new asteroid());
   objects.add(player1);
 }
@@ -42,7 +46,7 @@ void draw() {
   } else {
     print("mode is " + mode);
   }
-
   
+ 
 
 }

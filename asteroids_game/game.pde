@@ -1,14 +1,11 @@
-int layertimer = 0;
-
+int j = 0;
 void game() {
-  //layertimer += 1;
-  //if (layertimer == 2) {
-  //  fill(0, 30);
-  //  rect(0,0,width,height);
-  //  layertimer = 0;
-  //}
-
   
+  if (j == 420) {
+    objects.add(new asteroid());
+    j = 0;
+  }
+  j++;
   background(0);
   
   for (int i = 0; i < objects.size(); i++) {
@@ -23,6 +20,7 @@ void game() {
   fuelbarx = map(fuel, 0,50, 0,200);
   noStroke();
   fill(#C1C1C1);
+  rectMode(CORNER);
   rect(70,900, 200, 50);
   fill(#77E372);
   rect(70,900, fuelbarx, 50);
