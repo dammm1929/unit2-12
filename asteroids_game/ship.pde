@@ -46,6 +46,30 @@ class ship extends gameobject { // ship is extending off gameobject
     if (loc.x < 0-10) loc.x = width+9;
     if (loc.y > height+10) loc.y = 0-9;
     if (loc.y < 0-10) loc.y = height+9;
+    
+    if (hit == true) {
+      hit = false;
+      lives -= 1;
+      showshield = true;
+    }
+    
+    if (showshield == true) {
+      iframes -= 1;
+      if (iframes >= 1) {
+        circle(loc.x, loc.y, 50);
+      }
+      if (iframes <= 0) {
+        showshield = false;
+        iframes = 180;
+      }
+    }
+    textSize(55);
+    fill(255);
+    text("lives: ", 105,100);
+    text("score: " + score, 125,50);
+    if (lives >= 1) circle(190,103,20);
+    if (lives >= 2) circle(230,103,20);
+    if (lives >= 3) circle(270,103,20);
   }
   
   void move() {
@@ -80,4 +104,8 @@ class ship extends gameobject { // ship is extending off gameobject
       cooldown = 30;
     }
   }
+  
+  
+  
+  
 }

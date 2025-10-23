@@ -8,8 +8,11 @@ boolean upkey, leftkey, downkey, rightkey, spacekey, shiftkey;
 float fuel = 50;
 float fuelbarx = 200;
 int change = 0;
-
+boolean hit = false;
 ship player1; 
+int score = 0;
+float iframes = 180;
+boolean showshield = false;
 
 
 // list of bullets
