@@ -2,7 +2,7 @@ int j = 0;
 void game() {
   background(0);
   
-  if (j == 600) {
+  if (j == 400) {
     objects.add(new asteroid(random(0,width),-100)); //spawning new asteroids at top or bottom
     j = 0;
   }
@@ -16,6 +16,15 @@ void game() {
       objects.remove(i);
     }
   }
+  
+  for (int i = 0; i < particle.size(); i++) {
+    particles currentparticle = particle.get(i);
+    currentparticle.show();
+    if (currentparticle.t == 0) {
+      particle.remove(i);
+    }
+  }
+  
   
   fuelbarx = map(fuel, 0,50, 0,200);
   noStroke();

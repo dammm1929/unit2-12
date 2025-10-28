@@ -53,6 +53,10 @@ class ship extends gameobject { // ship is extending off gameobject
       showshield = true;
     }
     
+    if (lives == 0) {
+      mode = 4;
+    }
+    
     if (showshield == true) {
       iframes -= 1;
       if (iframes >= 1) {
@@ -76,6 +80,8 @@ class ship extends gameobject { // ship is extending off gameobject
     loc.add(vel);
     if (upkey) vel.add(dir);
     if (upkey == false) vel.mult(0.97); // slow it down
+    if (upkey == true && shiftkey == false) particle.add(new shiparticles());
+    if (upkey == true && fuel == 0) particle.add(new shiparticles());
     
     
     if (leftkey) dir.rotate(-radians(4));
@@ -88,7 +94,7 @@ class ship extends gameobject { // ship is extending off gameobject
       vel.set(dir);
       vel.setMag(10);
       fuel -= 1;
-      //for (int p = 0; p > 15; p++) show();
+      particle.add(new shiptrail());
     }
     
     if (shiftkey && fuel > 0 && downkey == true) {
@@ -96,6 +102,12 @@ class ship extends gameobject { // ship is extending off gameobject
       vel.setMag(-5);
       fuel -= 3;
     }
+    
+    if (showshadow == true && fuel > 0) {
+      showshadow = false;
+      particle.add(new shipshadow());
+    }
+
   }
   void shoot() {
     cooldown--;

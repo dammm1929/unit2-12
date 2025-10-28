@@ -5,6 +5,7 @@ PFont retro;
 boolean pleasedontleave;
 button[] buttons;
 boolean upkey, leftkey, downkey, rightkey, spacekey, shiftkey;
+boolean showshadow;
 float fuel = 50;
 float fuelbarx = 200;
 int change = 0;
@@ -17,16 +18,19 @@ boolean showshield = false;
 
 // list of bullets
 ArrayList<gameobject> objects;
+ArrayList<particles> particle;
 
 void setup() {
   size(1000,1000);
-  buttons = new button[4];
+  buttons = new button[5];
   buttons[0] = new button("Play",500,400,350,150, 0, #4B4A4A); 
   buttons[1] = new button("Settings",500,600,350,150, 0, #4B4A4A); 
   buttons[2] = new button("Leave :(",500,800,350,150, 0, #4B4A4A); 
   buttons[3] = new button("go back", 170,850, 150,75, 0, #4B4A4A);
+  buttons[4] = new button("try again", 600,600, 150,75, 0, #4B4A4A);
   retro = createFont("Eight-Bit Madness.ttf", 70);
   
+  particle = new ArrayList();
   objects = new ArrayList(); 
   player1 = new ship();
   objects.add(new asteroid());

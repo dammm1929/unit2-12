@@ -1,6 +1,7 @@
 class asteroid extends gameobject {
   
   float rotspeed, angle;
+  int a;
   
   
   asteroid() { // starting asteroids
@@ -41,9 +42,49 @@ class asteroid extends gameobject {
     strokeWeight(3);
     rotate(radians(angle));
     
-    circle(0, 0, d);
-    line(0, 0,lives*50/2, 0);
+    if(int(random(3)) == 0) a = 1;
+    else if(int(random(2)) == 0) a = 2;
+    else a = 3;
     
+    circle(0, 0, d); // d = 150 at default
+    if (a == 0) {
+      line(-90,0, -70,-50);
+      line(-70,-50, -20,-70);
+      line(-20,-70, 30,-65);
+      line(30,-65, 60,-75);
+      line(60,-75, 80,-10);
+      line(80,-10, 65,40);
+      line(65,40, 30,60);
+      line(30,60, 0,80);
+      line(0,80, -70,40);
+      line(-70,40, -90,0);
+    }
+    
+    if (a == 1) {
+      line(-80,10, -65,-40);
+      line(-65,-40, -65,-70);
+      line(-65,-70, -20,-80);
+      line(-20,-80, 25,-70);
+      line(25,-70, 40,-80);
+      line(40,-80, 90,-10);
+      line(90,-10, 60,40);
+      line(60,40, 65,60);
+      line(-20,80, 65,60);
+      line(-20,80, -80,10);
+    }
+    
+    if (a == 2) {
+      line(-80,10, -65,-40);
+      line(-65,-40, -10,-70);
+      line(-10,-70, 40,-80);
+      line(80,10, 40,-80);
+      line(80,10, 70,40);
+      line(70,40, 20,60);
+      line(20,60, 10,75);
+      line(10,75, -75,50);
+      line(-75,50, -80,10);
+    }
+      
     popMatrix();
     angle += rotspeed;
   }

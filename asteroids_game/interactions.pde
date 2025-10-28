@@ -4,7 +4,10 @@ void keyPressed() {
   if (key == 's' || keyCode == DOWN || key == 'S') downkey = true;
   if (key == 'd' || keyCode == RIGHT || key == 'D') rightkey = true;
   if (key == ' ') spacekey = true;
-  if (keyCode == SHIFT) shiftkey = true;
+  if (keyCode == SHIFT) {
+    shiftkey = true;
+    showshadow = true;
+  }
 }
 
 
