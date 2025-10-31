@@ -54,7 +54,7 @@ class shiptrail extends particles {
 
 class shipshadow extends particles {
   shipshadow() {
-    super(player1.loc.x, player1.loc.y, player1.dir.x, player1.dir.y, 60);
+    super(player1.loc.x, player1.loc.y, player1.dir.x, player1.dir.y, 30);
   }
   
   void show() {
@@ -62,8 +62,8 @@ class shipshadow extends particles {
     translate(loc.x,loc.y);
     rotate(dir.heading());
     rotate(radians(90));
-    fill(0, map(t, 0,60, 0,150));
-    stroke(255, map(t, 0,60, 0,150));
+    fill(0, map(t, 0,30, 0,150));
+    stroke(255, map(t, 0,30, 0,150));
     strokeWeight(3);
     triangle(0,-25, 17,15, -17,15);
     circle(0,0,10);
@@ -81,3 +81,21 @@ class shipshadow extends particles {
     t--;
   }
 }
+
+//class bullettrail extends particles {
+//  bullettrail(float x, float y, float _dirx, float _diry, float time) {
+//    super(x, y, _dirx, _diry, time);
+//    dir = _dirx;
+    
+//  }
+  
+//  void show() {
+//    pushMatrix();
+//    translate(loc.x, loc.y);
+//    fill(255);
+//    noStroke();
+//    strokeWeight(2);
+//    circle(0,0,5);
+//    popMatrix();
+//  }
+//}

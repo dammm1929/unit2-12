@@ -2,7 +2,7 @@ class asteroid extends gameobject {
   
   float rotspeed, angle;
   int a;
-  
+  float s = 1;
   
   asteroid() { // starting asteroids
     super(random(0,width), random(0,height),1,1);
@@ -12,9 +12,12 @@ class asteroid extends gameobject {
     d = lives*50;
     rotspeed = random(-2, 2);
     angle = 0;
+    if(int(random(2)) == 0) a = 2;
+    else if(int(random(1)) == 0) a = 1;
+    else a = 3;
   }
   
-  asteroid(float x, float y, int l) {
+  asteroid(float x, float y, int l) { // split asteroids
     super(x,y, 1, 1);
     vel.setMag(random(1,3));
     vel.rotate(random(TWO_PI));
@@ -22,16 +25,25 @@ class asteroid extends gameobject {
     d = lives*50;
     rotspeed = random(-2,2);
     angle = 0;
+    if(int(random(2)) == 0) a = 2;
+    else if(int(random(1)) == 0) a = 1;
+    else a = 3;
+    if (lives == 2) s -= 0.33;
+    else s = 0.33;
   }
   
-  asteroid(float x, float y) {
+  asteroid(float x, float y) { // new asteroids from sides
     super(x, y, 1,1);
+    //s = 1;
     vel.setMag(random(1,3));
     vel.rotate(random(TWO_PI));
     lives = 3;
     d = lives*50;
     rotspeed = random(-2, 2);
     angle = 0;
+    if(int(random(2)) == 0) a = 2;
+    else if(int(random(1)) == 0) a = 1;
+    else a = 3;
   }
   
   void show() {
@@ -39,15 +51,14 @@ class asteroid extends gameobject {
     translate(loc.x, loc.y);
     fill(0);
     stroke(255);
-    strokeWeight(3);
+    if (lives == 3) strokeWeight(3);
+    else if (lives == 2) strokeWeight(5);
+    else strokeWeight(9);
     rotate(radians(angle));
     
-    if(int(random(3)) == 0) a = 1;
-    else if(int(random(2)) == 0) a = 2;
-    else a = 3;
-    
-    circle(0, 0, d); // d = 150 at default
+    //circle(0, 0, d); // d = 150 at default
     if (a == 0) {
+      scale(s);
       line(-90,0, -70,-50);
       line(-70,-50, -20,-70);
       line(-20,-70, 30,-65);
@@ -61,6 +72,7 @@ class asteroid extends gameobject {
     }
     
     if (a == 1) {
+      scale(s);
       line(-80,10, -65,-40);
       line(-65,-40, -65,-70);
       line(-65,-70, -20,-80);
@@ -74,6 +86,7 @@ class asteroid extends gameobject {
     }
     
     if (a == 2) {
+      scale(s);
       line(-80,10, -65,-40);
       line(-65,-40, -10,-70);
       line(-10,-70, 40,-80);
@@ -114,11 +127,14 @@ class asteroid extends gameobject {
       }
       if (obj instanceof ship && showshield == false) { // collision with the ship
         if (dist(loc.x, loc.y, obj.loc.x, obj.loc.y) < d/2 + obj.d+6){
-          objects.add(new asteroid(loc.x, loc.y, lives-1));
-          objects.add(new asteroid(loc.x, loc.y, lives-1));
-          lives = 0;
+          if (showshadow == true) {
+            objects.add(new asteroid(loc.x, loc.y, lives-1));
+            objects.add(new asteroid(loc.x, loc.y, lives-1));
+            lives = 0;
+            score += 1;
+          }
           hit = true;
-          score += 1;
+          hitAsteroid = obj;
         }
       }
     }

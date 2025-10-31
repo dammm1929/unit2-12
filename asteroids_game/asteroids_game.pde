@@ -12,9 +12,12 @@ int change = 0;
 boolean hit = false;
 ship player1; 
 int score = 0;
-float iframes = 180;
-boolean showshield = false;
+float iframes = 120;
+boolean showshield = true;
+boolean enterhitstun = false;
+int hitstun = 0;
 
+gameobject hitAsteroid = null;
 
 // list of bullets
 ArrayList<gameobject> objects;
@@ -27,7 +30,7 @@ void setup() {
   buttons[1] = new button("Settings",500,600,350,150, 0, #4B4A4A); 
   buttons[2] = new button("Leave :(",500,800,350,150, 0, #4B4A4A); 
   buttons[3] = new button("go back", 170,850, 150,75, 0, #4B4A4A);
-  buttons[4] = new button("try again", 600,600, 150,75, 0, #4B4A4A);
+  buttons[4] = new button("try again", 600,700, 150,75, 0, #4B4A4A);
   retro = createFont("Eight-Bit Madness.ttf", 70);
   
   particle = new ArrayList();
@@ -37,7 +40,11 @@ void setup() {
   objects.add(new asteroid());
   objects.add(new asteroid());
   objects.add(new asteroid());
+  objects.add(new asteroid());
+  objects.add(new asteroid());
+  objects.add(new asteroid());
   objects.add(player1);
+  objects.add(new enemy());
 }
 
 void draw() {

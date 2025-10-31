@@ -20,6 +20,7 @@ class bullet extends gameobject {
   void show() {
    fill(255);
    stroke(255);
+   strokeWeight(3);
    circle(loc.x, loc.y, d);
   }
   

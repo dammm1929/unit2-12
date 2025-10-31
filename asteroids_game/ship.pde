@@ -19,6 +19,15 @@ class ship extends gameobject { // ship is extending off gameobject
     rotate(dir.heading());
     drawship();
     popMatrix();
+    
+    //if (vel.x > 8 || vel.y > 8 || vel.x < -8 || vel.y < -8) {
+    if (vel.x + vel.y >= 10 || vel.x - vel.y <= -10 || vel.x - vel.y >= 10 || vel.x + vel.y <= -10) {
+      showshadow = true;
+    } else showshadow = false;
+    
+    if (showshadow == true) {
+      particle.add(new shipshadow());
+    }
   }
   void drawship() {
     rotate(radians(90));
@@ -48,23 +57,53 @@ class ship extends gameobject { // ship is extending off gameobject
     if (loc.y < 0-10) loc.y = height+9;
     
     if (hit == true) {
+      
+      if (vel.mag() <= 0.3 && vel.mag() >= -0.3) { // if ship is barely moving
+        vel = hitAsteroid.vel.copy();
+        print(hitAsteroid.vel, " is asteroid velocity       ");
+        print(vel, " is ship velocity");
+      }
+      
+      hitAsteroid = null;
       hit = false;
+      enterhitstun = true;
       lives -= 1;
+      if (vel.mag() > 0.3 || vel.mag() < 0.3) { // if ship is moving enough
+        vel.x *= -0.5; // standard reverse it's velocity
+        vel.y *= -0.5;
+      }
       showshield = true;
     }
     
-    if (lives == 0) {
+    if (enterhitstun == true) hitstun += 1;
+    if (hitstun == 30) {
+      enterhitstun = false;
+      hitstun = 0;
+    }
+    
+    if (lives == 0) { // if you die
       mode = 4;
+    //  // ----- reset everything -----
+    //  lives = 3; 
+    //  loc.x = width/2;
+    //  loc.y = height/2;
+    //  score = 0;
+    //  fuel = 50;
+    //  dir = new PVector(0.1,0);
+    //  vel.setMag(0);
     }
     
     if (showshield == true) {
       iframes -= 1;
       if (iframes >= 1) {
+        noFill();
+        stroke(255);
+        strokeWeight(3);
         circle(loc.x, loc.y, 50);
       }
       if (iframes <= 0) {
         showshield = false;
-        iframes = 180;
+        iframes = 120;
       }
     }
     textSize(55);
@@ -87,26 +126,22 @@ class ship extends gameobject { // ship is extending off gameobject
     if (leftkey) dir.rotate(-radians(4));
     if (rightkey) dir.rotate(radians(4));
 
-    if (vel.x >= 10) vel.setMag(10);
-    if (vel.y >= 10) vel.setMag(10);
+    if (vel.x >= 9 || vel.y >= 9) vel.setMag(9);
+    if (vel.x <= -9 || vel.y <= -9) vel.setMag(9);
     
-    if (shiftkey && fuel > 0 && downkey == false) {
+    if (shiftkey && fuel > 0 && downkey == false && hitstun <= 0) {
       vel.set(dir);
       vel.setMag(10);
       fuel -= 1;
       particle.add(new shiptrail());
     }
     
-    if (shiftkey && fuel > 0 && downkey == true) {
+    if (shiftkey && fuel > 0 && downkey == true && hitstun <= 0) {
       vel.set(dir);
       vel.setMag(-5);
       fuel -= 3;
     }
     
-    if (showshadow == true && fuel > 0) {
-      showshadow = false;
-      particle.add(new shipshadow());
-    }
 
   }
   void shoot() {
