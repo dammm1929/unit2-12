@@ -17,6 +17,9 @@ void gameover() {
     objects.add(new asteroid());
     objects.add(new asteroid());
     objects.add(new asteroid());
+    objects.add(new asteroid());
+    objects.add(new asteroid());
+    objects.add(new asteroid());
     iframes = 120;
     score = 0;
     fuel = 50;

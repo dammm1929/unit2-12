@@ -57,14 +57,13 @@ class ship extends gameobject { // ship is extending off gameobject
     if (loc.y < 0-10) loc.y = height+9;
     
     if (hit == true) {
-      
       if (vel.mag() <= 0.3 && vel.mag() >= -0.3) { // if ship is barely moving
         vel = hitAsteroid.vel.copy();
         print(hitAsteroid.vel, " is asteroid velocity       ");
         print(vel, " is ship velocity");
       }
-      
       hitAsteroid = null;
+      
       hit = false;
       enterhitstun = true;
       lives -= 1;
@@ -91,19 +90,22 @@ class ship extends gameobject { // ship is extending off gameobject
     //  fuel = 50;
     //  dir = new PVector(0.1,0);
     //  vel.setMag(0);
+      fuelbarx = map(fuel, 0,50, 0,200);
+
     }
-    
     if (showshield == true) {
+      shieldopa = map(iframes, 0,120, 0,255);
       iframes -= 1;
       if (iframes >= 1) {
         noFill();
-        stroke(255);
+        stroke(255, 255, 255, shieldopa);
         strokeWeight(3);
         circle(loc.x, loc.y, 50);
       }
       if (iframes <= 0) {
         showshield = false;
         iframes = 120;
+        shieldopa = 255;
       }
     }
     textSize(55);

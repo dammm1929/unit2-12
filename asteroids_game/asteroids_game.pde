@@ -11,13 +11,15 @@ float fuelbarx = 200;
 int change = 0;
 boolean hit = false;
 ship player1; 
+enemy enemy1;
 int score = 0;
 float iframes = 120;
 boolean showshield = true;
 boolean enterhitstun = false;
 int hitstun = 0;
-
+float shieldopa = 255;
 gameobject hitAsteroid = null;
+float enemyspawntimer = random(400,600);
 
 // list of bullets
 ArrayList<gameobject> objects;
@@ -36,6 +38,7 @@ void setup() {
   particle = new ArrayList();
   objects = new ArrayList(); 
   player1 = new ship();
+  enemy1 = new enemy();
   objects.add(new asteroid());
   objects.add(new asteroid());
   objects.add(new asteroid());
