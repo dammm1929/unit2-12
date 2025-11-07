@@ -21,7 +21,7 @@ class ship extends gameobject { // ship is extending off gameobject
     popMatrix();
     
     //if (vel.x > 8 || vel.y > 8 || vel.x < -8 || vel.y < -8) {
-    if (vel.x + vel.y >= 10 || vel.x - vel.y <= -10 || vel.x - vel.y >= 10 || vel.x + vel.y <= -10) {
+    if (vel.x + vel.y >= 9 || vel.x - vel.y <= -9 || vel.x - vel.y >= 9 || vel.x + vel.y <= -9) {
       showshadow = true;
     } else showshadow = false;
     
@@ -32,7 +32,7 @@ class ship extends gameobject { // ship is extending off gameobject
   void drawship() {
     rotate(radians(90));
     fill(0);
-    stroke(255);
+    stroke(255,255,255, shipopacity);
     strokeWeight(3);
     triangle(0,-25, 17,15, -17,15);
     circle(0,0,10);
@@ -65,19 +65,31 @@ class ship extends gameobject { // ship is extending off gameobject
       hitAsteroid = null;
       
       hit = false;
-      enterhitstun = true;
-      lives -= 1;
+      enterdashstun = true;
+      if (enterhitstun == false) {
+        lives -= 1;
+        showshield = true;
+      }
       if (vel.mag() > 0.3 || vel.mag() < 0.3) { // if ship is moving enough
         vel.x *= -0.5; // standard reverse it's velocity
         vel.y *= -0.5;
       }
-      showshield = true;
     }
     
-    if (enterhitstun == true) hitstun += 1;
-    if (hitstun == 30) {
+    if (enterdashstun == true) dashstun += 1;
+    if (dashstun == 30) {
+      enterdashstun = false;
+      dashstun = 0;
+    }
+    
+    if (enterhitstun == true) {
+      hitstun += 1; // hitstun starts at 0 and adds to 60
+      shipopacity = 100;
+    }
+    if (hitstun == 60) {
       enterhitstun = false;
       hitstun = 0;
+      shipopacity = 255;
     }
     
     if (lives == 0) { // if you die
@@ -100,7 +112,7 @@ class ship extends gameobject { // ship is extending off gameobject
         noFill();
         stroke(255, 255, 255, shieldopa);
         strokeWeight(3);
-        circle(loc.x, loc.y, 50);
+        circle(loc.x, loc.y, 100);
       }
       if (iframes <= 0) {
         showshield = false;
@@ -110,35 +122,54 @@ class ship extends gameobject { // ship is extending off gameobject
     }
     textSize(55);
     fill(255);
+    stroke(255, 255, 255, 255);
+    strokeWeight(3);
+    textAlign(CENTER, CENTER);
     text("lives: ", 105,100);
     text("score: " + score, 125,50);
+    textAlign(LEFT, CENTER);
+    text("time: " + timesurvived/60, 35,150);
     if (lives >= 1) circle(190,103,20);
     if (lives >= 2) circle(230,103,20);
     if (lives >= 3) circle(270,103,20);
+    
+    for (int i = 0; i < objects.size(); i++) {
+      gameobject obj = objects.get(i);
+      if (obj instanceof bullet && showshield == false) {
+        if (dist(loc.x, loc.y, obj.loc.x, obj.loc.y) < 20 + obj.d/2) {
+          showshield = true;
+          lives -= 1;
+          obj.lives = 0;
+          if (lives == 0) mode = 4;
+        }
+      }
+    }
+    
   }
   
   void move() {
     loc.add(vel);
-    if (upkey) vel.add(dir);
+    if (upkey && hitstun == 0) vel.add(dir);
+    if (upkey == true && hitstun > 0) vel.mult(0.97);
     if (upkey == false) vel.mult(0.97); // slow it down
-    if (upkey == true && shiftkey == false) particle.add(new shiparticles());
-    if (upkey == true && fuel == 0) particle.add(new shiparticles());
+    if (upkey == true && shiftkey == false && hitstun == 0) particle.add(new shiparticles(player1.loc.x, player1.loc.y, player1.dir.x, player1.dir.y));
+    if (upkey == true && fuel == 0 && hitstun == 0) particle.add(new shiparticles(player1.loc.x, player1.loc.y, player1.dir.x, player1.dir.y));
     
     
-    if (leftkey) dir.rotate(-radians(4));
-    if (rightkey) dir.rotate(radians(4));
+    if (leftkey && hitstun == 0) dir.rotate(-radians(4));
+    if (rightkey && hitstun == 0) dir.rotate(radians(4));
 
     if (vel.x >= 9 || vel.y >= 9) vel.setMag(9);
     if (vel.x <= -9 || vel.y <= -9) vel.setMag(9);
     
-    if (shiftkey && fuel > 0 && downkey == false && hitstun <= 0) {
+    if (shiftkey && fuel > 0 && downkey == false && dashstun <= 0 && hitstun == 0) {
       vel.set(dir);
       vel.setMag(10);
       fuel -= 1;
       particle.add(new shiptrail());
     }
     
-    if (shiftkey && fuel > 0 && downkey == true && hitstun <= 0) {
+    if (shiftkey && fuel > 0 && downkey == true && dashstun <= 0 && hitstun == 0) {
       vel.set(dir);
       vel.setMag(-5);
       fuel -= 3;
@@ -149,7 +180,7 @@ class ship extends gameobject { // ship is extending off gameobject
   void shoot() {
     cooldown--;
     if (spacekey && cooldown <= 0) {
-      objects.add(new bullet());
+      objects.add(new bullet(loc.x,loc.y));
       cooldown = 30;
     }
   }

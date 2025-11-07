@@ -13,12 +13,12 @@ class particles {
 
 class shiparticles extends particles {
   color f;
-  shiparticles() {
-    super(player1.loc.x, player1.loc.y, player1.dir.x, player1.dir.y, 5);
+  shiparticles(float lx, float ly, float vx, float vy) {
+    super(lx,ly, vx,vy, 5);
     if(int(random(3)) == 0) f = #FF0808;
     else if(int(random(2)) == 0) f = #FFBE08;
     else f = #FAEE00;
-    
+    //player1.loc.x, player1.loc.y, player1.dir.x, player1.dir.y
   }
   
   void show() {
@@ -82,20 +82,42 @@ class shipshadow extends particles {
   }
 }
 
-//class bullettrail extends particles {
-//  bullettrail(float x, float y, float _dirx, float _diry, float time) {
-//    super(x, y, _dirx, _diry, time);
-//    dir = _dirx;
-    
-//  }
+class dust extends particles {
+  float tmax, dist;
+  dust(float x, float y, float time, float _dist) {
+    super(x, y, random(-1,1), random(-1,1), time);
+    dir.rotate(random(radians(360)));
+    dist = _dist;
+    tmax = time;
+  }
   
-//  void show() {
-//    pushMatrix();
-//    translate(loc.x, loc.y);
-//    fill(255);
-//    noStroke();
-//    strokeWeight(2);
-//    circle(0,0,5);
-//    popMatrix();
-//  }
-//}
+  void show() {
+    noStroke();
+    fill(255, map(t, 0,tmax, 0,255));
+    pushMatrix();
+    translate(loc.x, loc.y);
+    circle(0,0,10);
+    popMatrix();
+    loc.add(dir.x*dist, dir.y*dist);
+    t--;
+  }
+}
+
+class bullettrail extends particles {
+  bullettrail(float lx, float ly, float vx, float vy) {
+    super(lx, ly, vx, vy, 20);
+    loc.sub(dir.x*1.5,dir.y*1.5);
+  }
+  
+  void show() {
+    loc.add(dir.x*0.6, dir.y*0.6);
+    pushMatrix();
+    translate(loc.x, loc.y);
+    fill(#B4B4B4, map(t,0,10, 0,255));
+    noStroke();
+    strokeWeight(2);
+    circle(0,0,5);
+    popMatrix();
+    t--;
+  }
+}

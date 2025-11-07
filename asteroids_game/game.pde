@@ -1,9 +1,10 @@
 int j = 0;
 void game() {
+  timesurvived += 1;
   enemyspawntimer -= 1;
   if (enemyspawntimer <= 0) {
     objects.add(new enemy());
-    enemyspawntimer = random(400,600);
+    enemyspawntimer = random(800,1000);
   }
   background(0);
   

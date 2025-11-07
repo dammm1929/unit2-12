@@ -118,10 +118,11 @@ class asteroid extends gameobject {
       gameobject obj = objects.get(i);
       if (obj instanceof bullet) { // collision with bullets
         if (dist(loc.x, loc.y, obj.loc.x, obj.loc.y) < d/2 + obj.d/2) {
+          for (int d = 0; d < 20/3*lives; d++) particle.add(new dust(loc.x, loc.y, 50, 1));
           objects.add(new asteroid(loc.x, loc.y, lives-1));
           objects.add(new asteroid(loc.x, loc.y, lives-1));
-          lives = 0;
-          obj.lives = 0;
+          lives = 0; // the asteroid lives = 0
+          obj.lives = 0; // the bullet lives = 0
           score += 1;
         }
       }
@@ -132,6 +133,7 @@ class asteroid extends gameobject {
             objects.add(new asteroid(loc.x, loc.y, lives-1));
             lives = 0;
             score += 1;
+            enterhitstun = true;
           }
           hit = true;
           hitAsteroid = obj;

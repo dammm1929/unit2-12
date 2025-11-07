@@ -60,10 +60,25 @@ class enemy extends gameobject {
   void act() {
     cooldown -= 1;
     if (cooldown <= 0 && startshooting == true) {
-      objects.add(new bullet(loc.x,loc.y));
+      objects.add(new bullet(loc.x,loc.y, 1));
       cooldown = 60;
     }
     
+    // check for collision with bullet
+    for (int i = 0; i < objects.size(); i++) {
+      gameobject obj = objects.get(i);
+      if (obj instanceof bullet) {
+        if (dist(loc.x, loc.y, obj.loc.x, obj.loc.y) < 50 + obj.d/2) {
+          lives = 0;
+          obj.lives = 0;
+          score += 3;
+          if (fuel <= 30) fuel += 20; // refill fuel on enemy kill
+          if (fuel > 30) fuel = 50;
+        }
+      }
+    }
     
   }
+  
+
 }

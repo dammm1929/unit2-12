@@ -6,7 +6,10 @@ void gameover() {
   background(0);
   textSize(90);
   fill(255);
-  text("your lost", 400,600);
+  text("your lost", 400,300);
+  text("you score: " + score, 300,470);
+  textSize(60);
+  text("time survived: " + timesurvived/60 + " seconds", 350, 850);
   buttons[4].show();
   if (buttons[4].clicked) { // try again button
     mode = 3;
@@ -24,6 +27,8 @@ void gameover() {
     score = 0;
     fuel = 50;
     showshadow = false;
-    showshield = true; // UNFIXED PROBLEM !!
+    showshield = true; 
+    timesurvived = 0;
+    enemyspawntimer = 500;
   }
 }
