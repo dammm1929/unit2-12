@@ -9,7 +9,7 @@ class FBomb extends FBox {
   FBomb() {
     super(gridsize, gridsize); // FBomb is built like a box
     timer = 60;
-    this.setFillColor(#939393);
+    this.setFillColor(#F5BA19);
     this.setStroke(0);
     this.setStrokeWeight(3);
     this.setFriction(0);

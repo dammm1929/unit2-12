@@ -13,6 +13,7 @@ ArrayList<FBox> terrain;
 int dashcooldown = 30;
 boolean dashed = false;
 boolean nomove = false;
+boolean dashing = false;
 int nomovetimer = 10;
 boolean dashcharged = true;
 
@@ -37,6 +38,7 @@ void setup() {
     FBox b = new FBox(gridsize, gridsize); // (50,50)
     b.setPosition(x*gridsize,y*gridsize); // so they're spaced properly
     b.setStatic(true); // dont fall
+    b.setStrokeWeight(3);
     
     // individual traits for each block
     if (c == black) {
@@ -44,9 +46,24 @@ void setup() {
       b.setName("regwall");
       world.add(b);
     }
-    if (c == #989898) { // gray
-      b.setFillColor(#989898);
-      b.setName("breakable");
+    //if (c == #FF7F27) { // orange
+    //  b.setFillColor(#989898);
+    //  b.setName("breakable");
+    //  world.add(b);
+    //}
+    if (c == #FF0000) { // red
+      b.setFillColor(#E5E5E5);
+      b.setName("spike");
+      world.add(b);
+    }
+    if (c == #22B14C) { //green
+      b.setFillColor(#23AF35);
+      b.setName("crawler");
+      world.add(b);
+    }
+    if (c == #00A2E8) { // blue
+      b.setFillColor(#00A2E8);
+      b.setName("fly");
       world.add(b);
     }
     
@@ -95,6 +112,7 @@ void draw() {
   if (shootcooldown <= 0) canshoot = true;
 
   if (dash && dashcooldown >= 30 && dashcharged == true) {
+    dashing = true;
     if (faceright) {
       if (nomovetimer <= 10 && nomovetimer >= 0) {
         player.setVelocity(1000,-1);
@@ -120,7 +138,10 @@ void draw() {
       dashed = false;
       dashcooldown = 30;
     }
-    if (dashcooldown <= 20) nomovetimer = 10;
+    if (dashcooldown <= 20) {
+      nomovetimer = 10;
+      dashing = false;
+    }
   }
   
 }
