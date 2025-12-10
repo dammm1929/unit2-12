@@ -16,8 +16,13 @@ int dashcooldown = 30;
 boolean dashed = false;
 boolean nomove = false;
 boolean dashing = false;
-int nomovetimer = 10;
+int nomovetimer = 8;
 boolean dashcharged = true;
+color outofbounds = #8000FF;
+
+FloatList posX = new FloatList(), posY = new FloatList();
+
+gif walkgif, dashgif, jumpgif, flopgif, gif5;
 
 FPlayer player;
 //FBox player;
@@ -27,6 +32,17 @@ FWorld world;
 
 void setup() {
   size(1250,1000);
+  // gif order is (before, after, n, x, y, w, h)
+  // n is frames !!!!!
+  walkgif = new gif("walk_" , "_delay-0.05s.png", 10,595,458,60,60);
+  dashgif = new gif("dashright_" , "_delay-0.06s.png", 8, 595,458,67,67);
+  jumpgif = new gif("jump_" , "_delay-0.09s.png", 4, 595,458,67,67);
+  flopgif = new gif("flop_" , "_delay-0.09s.png", 6, 595, 458, 67,67);
+  //i forgot the idle gif so do that on thursday
+  
+  
+  
+
   Fisica.init(this);
   world = new FWorld(-100,-300, 10000,10000);
   map = loadImage("map.png");
@@ -87,6 +103,11 @@ void setup() {
     }
     
     
+    else if (c == outofbounds) {
+      posX.append(x*gridsize);
+      posY.append(y*gridsize);
+    }
+    
     
     x += 1;                 // move forward in row
     if (x == map.width) {   // if get to end of row
@@ -100,15 +121,29 @@ void setup() {
 }
 void draw() {
   background(#8BA2BF);  
+  
+  if (rightkey == false && leftkey == false) {
+    
+  }
+  if (dashing == false) {
+    walkgif.show();
+  }
   pushMatrix();
   translate(-player.getX() + width/2, -player.getY() + height/2);
+  rectMode(CENTER);
+  for (int i = 0; i < posX.size(); i++) {
+    fill(#171717);
+    noStroke();
+    square(posX.get(i), posY.get(i), gridsize);
+  }
+  
   world.step();
   world.draw();
   popMatrix();
-  updateplayer();
-  updateterrain();
+  //updateplayer();
+  //updateterrain();
   player.movement();
-  player.collisions();
+  player.collision();
   
   if (bomb != null) bomb.explode();
 }

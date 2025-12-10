@@ -1,11 +1,12 @@
-class FPlayer extends FBox {
+class FPlayer extends FGameObject {
  
   FPlayer() {
-    super(20,40);
-    setPosition(250,500);
-    setFillColor(#1F3DCB);
+    super(20,40); // if i extend gameobject, the size proportions of player is off
+    setPosition(980,900);
+    setNoFill();
     setStrokeWeight(3);
-    setStroke(0);
+    setNoStroke();
+    setName("player");
     setRestitution(0);
     setDensity(1);
     setGrabbable(false);
@@ -14,8 +15,8 @@ class FPlayer extends FBox {
   
   void movement() {
     if (leftkey == false && rightkey == false) vx = 0;
-    if (leftkey && nomovetimer == 10) vx = -300;
-    if (rightkey && nomovetimer == 10) vx = 300;
+    if (leftkey && nomovetimer == 8) vx = -300;
+    if (rightkey && nomovetimer == 8) vx = 300;
     vy = player.getVelocityY();
     // jumping
     ArrayList<FContact> contacts = player.getContacts();
@@ -43,7 +44,7 @@ class FPlayer extends FBox {
   
     if (dash && dashcooldown >= 30 && dashcharged == true) { // if dash
       dashing = true;
-      if (nomovetimer <= 10 && nomovetimer >= 0) {
+      if (nomovetimer <= 8 && nomovetimer >= 0) {
         
         // directions for omni directional dash
         if (rightkey && upkey == false && downkey == false) {
@@ -101,27 +102,32 @@ class FPlayer extends FBox {
     if (dashed == true) {
       dashcooldown -= 1;
       if (dashcooldown == 29) dashcharged = false;
-      if (dashcooldown > 20) nomovetimer -= 1;
+      if (dashcooldown > 20) nomovetimer -= 8;
       if (dashcooldown <= 0) {
         dashed = false;
         dashcooldown = 30;
       }
-      if (dashcooldown <= 20) {
-        nomovetimer = 10;
+      if (dashcooldown <= 18) {
+        nomovetimer = 8;
         dashing = false;
       }
     }
+    
+    if (dashing == true) {
+      dashgif.show();
+    }
+    
+    
   }
   
-  void collisions() {
-    ArrayList<FContact> contacts = getContacts();
-    for (int i = 0; i < contacts.size(); i++) {
-      FContact fc = contacts.get(i);
-      if (fc.contains("spike")) {
-        setPosition(250,800); 
-      }
+  
+  
+  void collision() {
+    if (istouching("spike")) {
+      setPosition(900,1000);
     }
   }
+  
   
 }
 
