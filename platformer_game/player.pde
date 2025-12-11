@@ -26,8 +26,28 @@ class FPlayer extends FGameObject {
       dashcharged = true;
     }
     
+    
+    // player animations
+    
+    if (dashing == false && rightkey == false && leftkey == false && contacts.size() > 0 && shootcooldown <= 15) {
+      idlegif.show();
+    }
+    if (dashing == false && rightkey == true && contacts.size() > 0 && shootcooldown <= 15 || dashing == false && leftkey == true && contacts.size() > 0 && shootcooldown <= 15) {
+      walkgif.show();
+    }
+    if (contacts.size() <= 0 && dashing == false && shootcooldown <= 15) {
+      jumpgif.show();
+    }
+    if (dashing == true && shootcooldown <= 15) {
+      dashgif.show();
+    }
+    if (shootcooldown < 30 && shootcooldown > 15) {
+      flopgif.show();
+    }
+    
+
     // spell
-    if (spell && canshoot == true) {
+    if (spell && canshoot == true && dashing == false) {
       bomb = new FBomb(); 
       canshoot = false;
       shootcooldown = 30;
@@ -112,12 +132,7 @@ class FPlayer extends FGameObject {
         dashing = false;
       }
     }
-    
-    if (dashing == true) {
-      dashgif.show();
-    }
-    
-    
+   
   }
   
   

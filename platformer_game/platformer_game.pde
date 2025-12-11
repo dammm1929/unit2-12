@@ -1,3 +1,16 @@
+// TO DO LIST
+
+// fix fireball from disappearing on normal ground
+// make breakable blocks despawn after a while
+// fix the wall jumping (get rid of it)
+// make enemies work
+
+// question 1: how to reset gif every time (dash)
+// question 2: how to stop gif from looping (jump)
+// question 3: how to reverse gifs
+
+
+
 import fisica.*;
 
 // platformer game 
@@ -22,7 +35,7 @@ color outofbounds = #8000FF;
 
 FloatList posX = new FloatList(), posY = new FloatList();
 
-gif walkgif, dashgif, jumpgif, flopgif, gif5;
+gif walkgif, dashgif, jumpgif, flopgif, idlegif;
 
 FPlayer player;
 //FBox player;
@@ -35,12 +48,10 @@ void setup() {
   // gif order is (before, after, n, x, y, w, h)
   // n is frames !!!!!
   walkgif = new gif("walk_" , "_delay-0.05s.png", 10,595,458,60,60);
-  dashgif = new gif("dashright_" , "_delay-0.06s.png", 8, 595,458,67,67);
-  jumpgif = new gif("jump_" , "_delay-0.09s.png", 4, 595,458,67,67);
-  flopgif = new gif("flop_" , "_delay-0.09s.png", 6, 595, 458, 67,67);
-  //i forgot the idle gif so do that on thursday
-  
-  
+  dashgif = new gif("dash_" , "_delay-0.06s.png", 8, 595,458,67,67);
+  jumpgif = new gif("jump_" , "_delay-0.09s.png", 4, 595,458,56,58);
+  flopgif = new gif("flop_" , "_delay-0.09s.png", 6, 595, 458, 60,60);
+  idlegif = new gif("idle_" , "_delay-0.09s.png", 5, 594, 460, 56, 58);
   
 
   Fisica.init(this);
@@ -121,13 +132,6 @@ void setup() {
 }
 void draw() {
   background(#8BA2BF);  
-  
-  if (rightkey == false && leftkey == false) {
-    
-  }
-  if (dashing == false) {
-    walkgif.show();
-  }
   pushMatrix();
   translate(-player.getX() + width/2, -player.getY() + height/2);
   rectMode(CENTER);
