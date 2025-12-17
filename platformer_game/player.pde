@@ -1,7 +1,11 @@
 class FPlayer extends FGameObject {
  
+  int frame;
+  FBox sprite;
+  FBox feet;
   FPlayer() {
     super(20,40); // if i extend gameobject, the size proportions of player is off
+    frame = 0;
     setPosition(980,900);
     setNoFill();
     setStrokeWeight(3);
@@ -11,15 +15,40 @@ class FPlayer extends FGameObject {
     setDensity(1);
     setGrabbable(false);
     setRotatable(false);
+    sprite = new FBox(imgw,imgh);
+    sprite.setSensor(true);
+    feet = new FBox(13,5);
+    feet.setSensor(true);
+    world.add(sprite);
+    world.add(feet);
+  }
+  
+  void sprites() {
+    sprite.setPosition(getX(), getY()-7);
+    sprite.setVelocity(this.getVelocityX(), this.getVelocityY());
+    sprite.setFillColor(#0FF23A);
+    animate();
+  }
+  
+  void feet() {
+    feet.setPosition(getX(), getY()+30);
+    feet.setVelocity(this.getVelocityX(), this.getVelocityY());
+    feet.setFillColor(#FFFFFF);
+    feet.setStroke(255);
+    feet.setStrokeWeight(5);
   }
   
   void movement() {
+    sprites();
+    feet();
     if (leftkey == false && rightkey == false) vx = 0;
-    if (leftkey && nomovetimer == 8) vx = -300;
-    if (rightkey && nomovetimer == 8) vx = 300;
+    if (leftkey && nomovetimer == 8 && rightkey == false) vx = -300;
+    if (rightkey && nomovetimer == 8 && leftkey == false) vx = 300;
     vy = player.getVelocityY();
+    
     // jumping
-    ArrayList<FContact> contacts = player.getContacts();
+    ArrayList<FContact> contacts = feet.getContacts();
+    
     if (upkey && contacts.size() > 0 || upkeyalt && contacts.size() > 0) vy = -500;
     player.setVelocity(vx, vy);
     if (contacts.size() > 0) {
@@ -29,20 +58,26 @@ class FPlayer extends FGameObject {
     
     // player animations
     
+
     if (dashing == false && rightkey == false && leftkey == false && contacts.size() > 0 && shootcooldown <= 15) {
-      idlegif.show();
+      //idlegif.show();
+      action = idle;
     }
     if (dashing == false && rightkey == true && contacts.size() > 0 && shootcooldown <= 15 || dashing == false && leftkey == true && contacts.size() > 0 && shootcooldown <= 15) {
-      walkgif.show();
+      //walkgif.show();
+      action = walk;
     }
     if (contacts.size() <= 0 && dashing == false && shootcooldown <= 15) {
-      jumpgif.show();
+      //jumpgif.show();
+      action = jump;
     }
     if (dashing == true && shootcooldown <= 15) {
-      dashgif.show();
+      //dashgif.show();
+      action = dashimg;
     }
     if (shootcooldown < 30 && shootcooldown > 15) {
-      flopgif.show();
+      //flopgif.show();
+      action = flop;
     }
     
 
@@ -132,8 +167,8 @@ class FPlayer extends FGameObject {
         dashing = false;
       }
     }
-   
-  }
+    
+  } // end of movement function
   
   
   
@@ -143,6 +178,14 @@ class FPlayer extends FGameObject {
     }
   }
   
+  void animate() {
+    if (frame >= action.length) frame = 0;
+    if (frameCount % 4 == 0) {
+      if (faceright) sprite.attachImage(action[frame]);
+      if (faceleft) sprite.attachImage(reverseImage(action[frame]));
+      frame++;
+    }
+  }
   
 }
 

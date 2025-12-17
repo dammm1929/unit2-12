@@ -23,6 +23,7 @@ void keyPressed() {
   if (key == 'e' || key == 'E') spell = true;
   if (keyCode == SHIFT) dash = true; 
   
+  //if (keyCode == RIGHT) imgright = true;
 }
 
 void keyReleased() {
