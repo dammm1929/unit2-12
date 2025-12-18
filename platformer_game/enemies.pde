@@ -22,7 +22,7 @@ class FGoomba extends FGameObject {
     if (frame >= crabwalk.length) frame = 0;
     if (frameCount % 5 == 0) {
       if (dir == R) attachImage(crabwalk[frame]);
-      if (dir == L) attachImage(crabwalk[frame]);
+      if (dir == L) attachImage(reverseImage(crabwalk[frame]));
       frame++;
     }
   }
@@ -32,6 +32,7 @@ class FGoomba extends FGameObject {
   }
   
   void move() {
-    
+    float vy = getVelocityY();
+    setVelocity(speed*dir, vy);
   }
 }

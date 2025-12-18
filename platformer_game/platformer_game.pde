@@ -130,10 +130,10 @@ void setup() {
   action = idle;
   
   crabwalk = new PImage[4];
-  crabwalk[0] = loadImage("crab_" + 0 + "delay-0.1s.gif");
-  crabwalk[1] = loadImage("crab_" + 1 + "delay-0.1s.gif");
-  crabwalk[2] = loadImage("crab_" + 2 + "delay-0.1s.gif");
-  crabwalk[3] = loadImage("crab_" + 3 + "delay-0.1s.gif");
+  crabwalk[0] = loadImage("crab_" + 0 + "_delay-0.1s.gif");
+  crabwalk[1] = loadImage("crab_" + 1 + "_delay-0.1s.gif");
+  crabwalk[2] = loadImage("crab_" + 2 + "_delay-0.1s.gif");
+  crabwalk[3] = loadImage("crab_" + 3 + "_delay-0.1s.gif");
   for (int n = 0; n <= 3; n++) {
     crabwalk[n].resize(imgw,imgh);
   }
@@ -190,7 +190,7 @@ void setup() {
       FGoomba gmb = new FGoomba(x*gridsize, y*gridsize);
       gmb.setFillColor(#23AF35);
       gmb.setName("crawler");
-      gmb.attachImage(crabwalk);
+      //gmb.attachImage(crabwalk);
       world.add(gmb);
       enemies.add(gmb);
     }
