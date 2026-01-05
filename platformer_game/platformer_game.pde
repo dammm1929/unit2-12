@@ -135,7 +135,7 @@ void setup() {
   crabwalk[2] = loadImage("crab_" + 2 + "_delay-0.1s.gif");
   crabwalk[3] = loadImage("crab_" + 3 + "_delay-0.1s.gif");
   for (int n = 0; n <= 3; n++) {
-    crabwalk[n].resize(imgw,imgh);
+    crabwalk[n].resize(imgw+20,imgh+20);
   }
   
 
@@ -144,6 +144,7 @@ void setup() {
   map = loadImage("map.png");
   breakables = new ArrayList<FBox>();
   regulars = new ArrayList<FBox>();
+  enemies = new ArrayList<FGameObject>();
   world.setGravity(0,900);
   zoom = 5;
   
@@ -174,6 +175,12 @@ void setup() {
       world.add(b);
       regulars.add(b);
     }
+    if (c == #7F7F7F) { // grayish on the map img
+      b.setFillColor(black);
+      b.setName("bouncewall");
+      world.add(b);
+      regulars.add(b);
+    }
     if (c == #ED1C24) { // red
       d.setFillColor(#E5E5E5);
       d.setName("spike");
@@ -186,14 +193,14 @@ void setup() {
       world.add(e);
       breakables.add(e);
     }
+    
     if (c == #22B14C) { //green
       FGoomba gmb = new FGoomba(x*gridsize, y*gridsize);
       gmb.setFillColor(#23AF35);
-      gmb.setName("crawler");
-      //gmb.attachImage(crabwalk);
       world.add(gmb);
       enemies.add(gmb);
     }
+    
     if (c == #00A2E8) { // blue
       b.setFillColor(#00A2E8);
       b.setName("fly");

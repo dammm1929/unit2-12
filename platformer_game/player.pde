@@ -1,7 +1,7 @@
 class FPlayer extends FGameObject {
  
   int frame;
-  FBox sprite;
+  FBox playerbox;
   FBox feet;
   FPlayer() {
     super(20,40); // if i extend gameobject, the size proportions of player is off
@@ -15,18 +15,18 @@ class FPlayer extends FGameObject {
     setDensity(1);
     setGrabbable(false);
     setRotatable(false);
-    sprite = new FBox(imgw,imgh);
-    sprite.setSensor(true);
+    playerbox = new FBox(imgw,imgh);
+    playerbox.setSensor(true);
     feet = new FBox(13,5);
     feet.setSensor(true);
-    world.add(sprite);
+    world.add(playerbox);
     world.add(feet);
   }
   
-  void sprites() {
-    sprite.setPosition(getX(), getY()-7);
-    sprite.setVelocity(this.getVelocityX(), this.getVelocityY());
-    sprite.setFillColor(#0FF23A);
+  void playersprite() {
+    playerbox.setPosition(getX(), getY()-7);
+    playerbox.setVelocity(this.getVelocityX(), this.getVelocityY());
+    playerbox.setFillColor(#0FF23A);
     animate();
   }
   
@@ -39,7 +39,7 @@ class FPlayer extends FGameObject {
   }
   
   void movement() {
-    sprites();
+    playersprite();
     feet();
     if (leftkey == false && rightkey == false) vx = 0;
     if (leftkey && nomovetimer == 8 && rightkey == false) vx = -300;
@@ -181,8 +181,8 @@ class FPlayer extends FGameObject {
   void animate() {
     if (frame >= action.length) frame = 0;
     if (frameCount % 4 == 0) {
-      if (faceright) sprite.attachImage(action[frame]);
-      if (faceleft) sprite.attachImage(reverseImage(action[frame]));
+      if (faceright) playerbox.attachImage(action[frame]);
+      if (faceleft) playerbox.attachImage(reverseImage(action[frame]));
       frame++;
     }
   }

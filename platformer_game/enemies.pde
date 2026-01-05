@@ -3,19 +3,22 @@ class FGoomba extends FGameObject {
   int dir = L; // direction starts facing left
   int speed = 50;
   int frame = 0;
+  FBox enemybox;
   
   FGoomba(float x, float y) {
     super();
     setPosition(x, y);
     setName("goomba");
     setRotatable(false);
-    
+    enemybox = new FBox(imgw, imgh);
+    enemybox.setSensor(true);
+    world.add(enemybox);
   }
   
   void act() {
-    animate();
     collide();
     move();
+    enemysprite();
   }
   
   void animate() {
@@ -27,8 +30,18 @@ class FGoomba extends FGameObject {
     }
   }
   
+  void enemysprite() {
+    enemybox.setPosition(getX(), getY()-5);
+    enemybox.setVelocity(this.getVelocityX(), this.getVelocityY());
+    enemybox.setFillColor(#0FF23A);
+    animate();
+  }
+  
   void collide() {
-    
+    if (istouching("bouncewall") || istouching("breakable")) {
+      dir *= -1;
+      setPosition(getX() + dir, getY());
+    }
   }
   
   void move() {
