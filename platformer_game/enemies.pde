@@ -6,11 +6,13 @@ class FGoomba extends FGameObject {
   FBox enemybox;
   
   FGoomba(float x, float y) {
-    super();
+    super(40,35); // enemy's actual hitbox
     setPosition(x, y);
     setName("goomba");
     setRotatable(false);
-    enemybox = new FBox(imgw, imgh);
+    setGrabbable(false);
+    //setNoStroke();
+    enemybox = new FBox(50, 50);
     enemybox.setSensor(true);
     world.add(enemybox);
   }
@@ -21,20 +23,21 @@ class FGoomba extends FGameObject {
     enemysprite();
   }
   
+  void enemysprite() {
+    enemybox.setPosition(getX(), getY()-31);
+    enemybox.setVelocity(this.getVelocityX(), this.getVelocityY());
+    enemybox.setFillColor(#05FF2C);
+    enemybox.setStroke(255);
+    animate();
+  }
+  
   void animate() {
     if (frame >= crabwalk.length) frame = 0;
     if (frameCount % 5 == 0) {
-      if (dir == R) attachImage(crabwalk[frame]);
-      if (dir == L) attachImage(reverseImage(crabwalk[frame]));
+      if (dir == R) enemybox.attachImage(crabwalk[frame]);
+      if (dir == L) enemybox.attachImage(reverseImage(crabwalk[frame]));
       frame++;
     }
-  }
-  
-  void enemysprite() {
-    enemybox.setPosition(getX(), getY()-5);
-    enemybox.setVelocity(this.getVelocityX(), this.getVelocityY());
-    enemybox.setFillColor(#0FF23A);
-    animate();
   }
   
   void collide() {

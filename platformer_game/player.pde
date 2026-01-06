@@ -26,15 +26,24 @@ class FPlayer extends FGameObject {
   void playersprite() {
     playerbox.setPosition(getX(), getY()-7);
     playerbox.setVelocity(this.getVelocityX(), this.getVelocityY());
-    playerbox.setFillColor(#0FF23A);
+    playerbox.setFillColor(#03FF98);
     animate();
+  }
+  
+  void animate() {
+    if (frame >= action.length) frame = 0;
+    if (frameCount % 4 == 0) { // MAKE THIS FASTER WHEN DASHING !!!!
+      if (faceright) playerbox.attachImage(action[frame]);
+      if (faceleft) playerbox.attachImage(reverseImage(action[frame]));
+      frame++;
+    }
   }
   
   void feet() {
     feet.setPosition(getX(), getY()+30);
     feet.setVelocity(this.getVelocityX(), this.getVelocityY());
-    feet.setFillColor(#FFFFFF);
-    feet.setStroke(255);
+    feet.setNoFill();
+    feet.setNoStroke();
     feet.setStrokeWeight(5);
   }
   
@@ -161,6 +170,7 @@ class FPlayer extends FGameObject {
       if (dashcooldown <= 0) {
         dashed = false;
         dashcooldown = 30;
+        dashvar = 0;
       }
       if (dashcooldown <= 18) {
         nomovetimer = 8;
@@ -176,16 +186,12 @@ class FPlayer extends FGameObject {
     if (istouching("spike")) {
       setPosition(900,1000);
     }
-  }
-  
-  void animate() {
-    if (frame >= action.length) frame = 0;
-    if (frameCount % 4 == 0) {
-      if (faceright) playerbox.attachImage(action[frame]);
-      if (faceleft) playerbox.attachImage(reverseImage(action[frame]));
-      frame++;
+    
+    if (istouching("goomba")) {
+      setPosition(900,1000);
     }
   }
+  
   
 }
 

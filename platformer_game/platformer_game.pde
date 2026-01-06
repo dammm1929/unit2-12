@@ -45,6 +45,8 @@ PImage[] crabwalk;
 int imgw = 45;
 int imgh = 50;
 
+int dashvar;
+
 
 FloatList posX = new FloatList(), posY = new FloatList(); // for filling outside of the map
 
@@ -112,8 +114,8 @@ void setup() {
   dashimg[5] = loadImage("dash_" + 5 + "_delay-0.06s.png");
   dashimg[6] = loadImage("dash_" + 6 + "_delay-0.06s.png");
   dashimg[7] = loadImage("dash_" + 7 + "_delay-0.06s.png");
-  for (int n = 0; n <= 7; n++) {
-    dashimg[n].resize(imgw+10,imgh+5);
+  for (dashvar = 0; dashvar <= 7; dashvar++) {
+    dashimg[dashvar].resize(imgw+10,imgh+5);
   }
   
   flop = new PImage[6];
@@ -135,7 +137,7 @@ void setup() {
   crabwalk[2] = loadImage("crab_" + 2 + "_delay-0.1s.gif");
   crabwalk[3] = loadImage("crab_" + 3 + "_delay-0.1s.gif");
   for (int n = 0; n <= 3; n++) {
-    crabwalk[n].resize(imgw+20,imgh+20);
+    crabwalk[n].resize(imgw+40,imgh+40);
   }
   
 
@@ -196,7 +198,7 @@ void setup() {
     
     if (c == #22B14C) { //green
       FGoomba gmb = new FGoomba(x*gridsize, y*gridsize);
-      gmb.setFillColor(#23AF35);
+      gmb.setNoFill();
       world.add(gmb);
       enemies.add(gmb);
     }
