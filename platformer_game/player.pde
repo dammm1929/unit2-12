@@ -1,6 +1,7 @@
 class FPlayer extends FGameObject {
  
   int frame;
+  int fastframe;
   FBox playerbox;
   FBox feet;
   FPlayer() {
@@ -27,16 +28,32 @@ class FPlayer extends FGameObject {
     playerbox.setPosition(getX(), getY()-7);
     playerbox.setVelocity(this.getVelocityX(), this.getVelocityY());
     playerbox.setFillColor(#03FF98);
-    animate();
+    if (action != dashimg) {
+      animate();
+    }
+    if (action == dashimg) {
+      fastanimate();
+    }
   }
   
   void animate() {
-    if (frame >= action.length) frame = 0;
-    if (frameCount % 4 == 0) { // MAKE THIS FASTER WHEN DASHING !!!!
+    if (frame >= action.length && action != jump) frame = 0; // for most actions, reset frame to 0
+    if (frame >= action.length && action == jump) frame = 3; // for jump, hold last frame
+    if (frameCount % 4 == 0) {
       if (faceright) playerbox.attachImage(action[frame]);
       if (faceleft) playerbox.attachImage(reverseImage(action[frame]));
       frame++;
     }
+  }
+  
+  void fastanimate() {
+    if (fastframe >= action.length) fastframe = 0;
+    if (frameCount % 2 == 0) { // faster because dash needs to be fast
+      if (faceright) playerbox.attachImage(action[fastframe]);
+      if (faceleft) playerbox.attachImage(reverseImage(action[fastframe]));
+      fastframe++;
+    }
+    if (dashcooldown <= 0) fastframe = 0;
   }
   
   void feet() {
@@ -170,7 +187,7 @@ class FPlayer extends FGameObject {
       if (dashcooldown <= 0) {
         dashed = false;
         dashcooldown = 30;
-        dashvar = 0;
+        
       }
       if (dashcooldown <= 18) {
         nomovetimer = 8;

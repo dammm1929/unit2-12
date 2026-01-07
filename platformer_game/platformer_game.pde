@@ -6,7 +6,6 @@
 // make enemies work
 // get textures for terrain and enemies
 
-// question 1: how to reset gif every time (dash)
 // question 2: how to stop gif from looping and hold a single frame (jump)
 
 
@@ -41,11 +40,11 @@ PImage[] dashimg;
 PImage[] flop;
 PImage[] action;
 PImage[] crabwalk;
+PImage[] batfly;
 
 int imgw = 45;
 int imgh = 50;
 
-int dashvar;
 
 
 FloatList posX = new FloatList(), posY = new FloatList(); // for filling outside of the map
@@ -106,16 +105,19 @@ void setup() {
   }
   
   dashimg = new PImage[8];
-  dashimg[0] = loadImage("dash_" + 0 + "_delay-0.06s.png");
-  dashimg[1] = loadImage("dash_" + 1 + "_delay-0.06s.png");
-  dashimg[2] = loadImage("dash_" + 2 + "_delay-0.06s.png");
-  dashimg[3] = loadImage("dash_" + 3 + "_delay-0.06s.png");
-  dashimg[4] = loadImage("dash_" + 4 + "_delay-0.06s.png");
-  dashimg[5] = loadImage("dash_" + 5 + "_delay-0.06s.png");
-  dashimg[6] = loadImage("dash_" + 6 + "_delay-0.06s.png");
-  dashimg[7] = loadImage("dash_" + 7 + "_delay-0.06s.png");
-  for (dashvar = 0; dashvar <= 7; dashvar++) {
-    dashimg[dashvar].resize(imgw+10,imgh+5);
+  for (int n = 0; n <= 7; n++) {
+    dashimg[n] = loadImage("dash_" + n + "_delay-0.06s.png");
+  }
+  //dashimg[0] = loadImage("dash_" + 0 + "_delay-0.06s.png");
+  //dashimg[1] = loadImage("dash_" + 1 + "_delay-0.06s.png");
+  //dashimg[2] = loadImage("dash_" + 2 + "_delay-0.06s.png");
+  //dashimg[3] = loadImage("dash_" + 3 + "_delay-0.06s.png");
+  //dashimg[4] = loadImage("dash_" + 4 + "_delay-0.06s.png");
+  //dashimg[5] = loadImage("dash_" + 5 + "_delay-0.06s.png");
+  //dashimg[6] = loadImage("dash_" + 6 + "_delay-0.06s.png");
+  //dashimg[7] = loadImage("dash_" + 7 + "_delay-0.06s.png");
+  for (int n = 0; n <= 7; n++) {
+    dashimg[n].resize(imgw+10,imgh+5);
   }
   
   flop = new PImage[6];
@@ -138,6 +140,14 @@ void setup() {
   crabwalk[3] = loadImage("crab_" + 3 + "_delay-0.1s.gif");
   for (int n = 0; n <= 3; n++) {
     crabwalk[n].resize(imgw+40,imgh+40);
+  }
+  
+  batfly = new PImage[10];
+  for (int n = 0; n <= 9; n++) {
+    batfly[n] = loadImage("bat_" + n + "_delay-0.12s.gif");
+  }
+  for (int n = 0; n <= 9; n++) {
+    batfly[n].resize(imgw+10,imgh+5);
   }
   
 
@@ -204,10 +214,10 @@ void setup() {
     }
     
     if (c == #00A2E8) { // blue
-      b.setFillColor(#00A2E8);
-      b.setName("fly");
-      world.add(b);
-      regulars.add(b);
+      Ffly fly = new Ffly(x*gridsize, y*gridsize);
+      fly.setNoFill();
+      world.add(fly);
+      enemies.add(fly);
     }
     
     
@@ -228,7 +238,7 @@ void setup() {
   world.add(player);
 }
 void draw() {
-  background(#8BA2BF);  
+  background(#8BA2BF);
   pushMatrix();
   translate(-player.getX() + width/2, -player.getY() + height/2);
   rectMode(CENTER);
