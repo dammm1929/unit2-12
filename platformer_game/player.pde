@@ -207,6 +207,10 @@ class FPlayer extends FGameObject {
     if (istouching("goomba")) {
       setPosition(900,1000);
     }
+    
+    if (istouching("fly")) {
+      setPosition(900,1000);
+    }
   }
   
   

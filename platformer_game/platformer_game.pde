@@ -144,10 +144,10 @@ void setup() {
   
   batfly = new PImage[10];
   for (int n = 0; n <= 9; n++) {
-    batfly[n] = loadImage("bat_" + n + "_delay-0.12s.gif");
+    batfly[n] = loadImage("bat_" + n + "_delay-0.08s.gif");
   }
   for (int n = 0; n <= 9; n++) {
-    batfly[n].resize(imgw+10,imgh+5);
+    batfly[n].resize(imgw+90,imgh+90);
   }
   
 
