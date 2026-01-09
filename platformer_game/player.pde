@@ -7,7 +7,7 @@ class FPlayer extends FGameObject {
   FPlayer() {
     super(20,40); // if i extend gameobject, the size proportions of player is off
     frame = 0;
-    setPosition(980,900);
+    setPosition(1300,900);
     setNoFill();
     setStrokeWeight(3);
     setNoStroke();
@@ -60,7 +60,8 @@ class FPlayer extends FGameObject {
     feet.setPosition(getX(), getY()+30);
     feet.setVelocity(this.getVelocityX(), this.getVelocityY());
     feet.setNoFill();
-    feet.setNoStroke();
+    //feet.setNoStroke();
+    feet.setStroke(255);
     feet.setStrokeWeight(5);
   }
   
@@ -75,10 +76,17 @@ class FPlayer extends FGameObject {
     // jumping
     ArrayList<FContact> contacts = feet.getContacts();
     
-    if (upkey && contacts.size() > 0 || upkeyalt && contacts.size() > 0) vy = -500;
+    if (upkey && contacts.size() > 0 || upkeyalt && contacts.size() > 0) { // if touching anything
+      if (istouching("regwall") || istouching("bouncewall") || istouching("breakable")) { // make sure its the ground
+        vy = -500;
+      }
+    }
     player.setVelocity(vx, vy);
+    
     if (contacts.size() > 0) {
-      dashcharged = true;
+      if (istouching("regwall") || istouching("bouncewall") || istouching("breakable")) {
+        dashcharged = true;
+      }
     }
     
     
@@ -87,11 +95,15 @@ class FPlayer extends FGameObject {
 
     if (dashing == false && rightkey == false && leftkey == false && contacts.size() > 0 && shootcooldown <= 15) {
       //idlegif.show();
-      action = idle;
+      if (istouching("regwall") || istouching("bouncewall") || istouching("breakable")) {
+        action = idle;
+      }
     }
     if (dashing == false && rightkey == true && contacts.size() > 0 && shootcooldown <= 15 || dashing == false && leftkey == true && contacts.size() > 0 && shootcooldown <= 15) {
       //walkgif.show();
-      action = walk;
+      if (istouching("regwall") || istouching("bouncewall") || istouching("breakable")) {
+        action = walk;
+      }
     }
     if (contacts.size() <= 0 && dashing == false && shootcooldown <= 15) {
       //jumpgif.show();

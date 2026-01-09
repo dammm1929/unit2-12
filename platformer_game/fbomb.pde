@@ -63,7 +63,7 @@ class FBomb extends FBox {
         
         // BREAKABLE BLOCK DESPAWNING DOESNT WORK YET
         blockDespawnTimer --;
-        println(blockDespawnTimer);
+        //println(blockDespawnTimer);
         if (blockDespawnTimer == 0) {
           world.remove(b);
           blockDespawnTimer = 120;

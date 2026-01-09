@@ -1,6 +1,6 @@
 class Ffly extends FGameObject {
   int dir = L; // direction starts facing left
-  int speed = 50;
+  int speed = 3;
   int frame = 0;
   float flyturnaroundcount = random(400,600);
   
@@ -10,6 +10,7 @@ class Ffly extends FGameObject {
   
   FBox enemybox;
   FCircle radar;
+  FCircle radar2;
   
   Ffly (float x, float y) {
     super(40,35); // enemy's actual hitbox
@@ -21,13 +22,15 @@ class Ffly extends FGameObject {
     enemybox = new FBox(50, 50);
     radar = new FCircle(600);
     radar.setSensor(true);
+    radar2 = new FCircle(1200);
+    radar2.setSensor(true);
     enemybox.setSensor(true);
     world.add(enemybox);
     world.add(radar);
+    world.add(radar2);
   }
   
   float flysinY = 0;
-  
   void act() {
     detection();
     move();
@@ -40,7 +43,24 @@ class Ffly extends FGameObject {
     }
   }
   
-  void waiting() {
+  void detection() {
+    radar.setPosition(getX(), getY());
+    radar.setVelocity(this.getVelocityX(), this.getVelocityY());
+    radar.setNoFill();
+    radar.setStroke(#FF5A5A);
+    
+    radar2.setVelocity(this.getVelocityX(), this.getVelocityY());
+    radar2.setNoFill();
+    radar2.setStroke(#0AFC69);
+    
+    if (player.isTouchingBody(radar)) {
+      state = aggro;
+    }
+  }
+  
+  void waiting() { // caused by state being idle
+    setStatic(true);
+    radar2.setPosition(-100,-100);
     setPosition(this.getX(), this.getY()+sin(flysinY)*2); // fly bobbing up and down
     flysinY += 0.06;
     flyturnaroundcount -= 1; // fly turning around randomly
@@ -50,15 +70,26 @@ class Ffly extends FGameObject {
     }
   }
   
-  void detection() {
-    radar.setPosition(getX(), getY());
-    radar.setVelocity(this.getVelocityX(), this.getVelocityY());
-    radar.setNoFill();
-    radar.setStroke(#FF5A5A);
-  }
-  
-  void attacking() {
+  void attacking() { // caused by state being aggro
+    radar2.setPosition(getX(), getY());
+    if (player.isTouchingBody(radar2) == false) {
+      state = idle;
+    }
     
+    //moving 
+    setStatic(false);
+    setVelocity((player.getX() - this.getX())/2, (player.getY() - this.getY())/2);
+    if (player.getX() < this.getX()) {
+      dir = R;
+    }
+    else if (player.getX() > this.getY()) {
+      dir = L;
+    }
+    
+    //if (dist(player.getX(), player.getY(), this.getX(), this.getY()) < 100) {
+    //  speed += 1;
+    //}
+
   }
   
   void enemysprite() {
