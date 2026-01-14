@@ -8,6 +8,7 @@ class FGoomba extends FGameObject {
   FGoomba(float x, float y) {
     super(40,35); // enemy's actual hitbox
     setPosition(x, y);
+    setNoStroke();
     setName("goomba");
     setRotatable(false);
     setGrabbable(false);

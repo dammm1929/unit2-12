@@ -15,6 +15,7 @@ class Ffly extends FGameObject {
   Ffly (float x, float y) {
     super(40,35); // enemy's actual hitbox
     setPosition(x, y);
+    setNoStroke();
     setName("fly");
     setRotatable(false);
     setGrabbable(false);
@@ -47,11 +48,11 @@ class Ffly extends FGameObject {
     radar.setPosition(getX(), getY());
     radar.setVelocity(this.getVelocityX(), this.getVelocityY());
     radar.setNoFill();
-    radar.setStroke(#FF5A5A);
+    radar.setNoStroke();
     
     radar2.setVelocity(this.getVelocityX(), this.getVelocityY());
     radar2.setNoFill();
-    radar2.setStroke(#0AFC69);
+    radar2.setNoStroke();
     
     if (player.isTouchingBody(radar)) {
       state = aggro;
@@ -113,6 +114,15 @@ class Ffly extends FGameObject {
   void move() {
     float vx = getVelocityX();
     setVelocity(vx, 0);
+  }
+  
+  void collision() {
+    
+    if (this.istouching("bomb")) {
+      // UNFINISHED!!!! COLLISION WITH BOMB TO DESPAWN
+
+    }
+    
   }
   
 }

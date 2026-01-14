@@ -3,11 +3,11 @@ class FPlayer extends FGameObject {
   int frame;
   int fastframe;
   FBox playerbox;
-  FBox feet;
+  FGameObject feet;
   FPlayer() {
     super(20,40); // if i extend gameobject, the size proportions of player is off
     frame = 0;
-    setPosition(1300,900);
+    setPosition(980,1100);
     setNoFill();
     setStrokeWeight(3);
     setNoStroke();
@@ -18,7 +18,7 @@ class FPlayer extends FGameObject {
     setRotatable(false);
     playerbox = new FBox(imgw,imgh);
     playerbox.setSensor(true);
-    feet = new FBox(13,5);
+    feet = new FGameObject(13,5);
     feet.setSensor(true);
     world.add(playerbox);
     world.add(feet);
@@ -60,8 +60,7 @@ class FPlayer extends FGameObject {
     feet.setPosition(getX(), getY()+30);
     feet.setVelocity(this.getVelocityX(), this.getVelocityY());
     feet.setNoFill();
-    //feet.setNoStroke();
-    feet.setStroke(255);
+    feet.setNoStroke();
     feet.setStrokeWeight(5);
   }
   
@@ -74,40 +73,43 @@ class FPlayer extends FGameObject {
     vy = player.getVelocityY();
     
     // jumping
-    ArrayList<FContact> contacts = feet.getContacts();
     
-    if (upkey && contacts.size() > 0 || upkeyalt && contacts.size() > 0) { // if touching anything
-      if (istouching("regwall") || istouching("bouncewall") || istouching("breakable")) { // make sure its the ground
-        vy = -500;
-      }
+    //if (upkey && contacts.size() > 0 || upkeyalt && contacts.size() > 0) { // if touching anything
+    if (upkey && feet.istouching("regwall") || upkey && feet.istouching("bouncewall") || upkey && feet.istouching("breakable")) { // make sure its the ground
+      vy = -500;
     }
+    else if (upkeyalt && feet.istouching("regwall") || upkeyalt && feet.istouching("bouncewall") || upkeyalt && feet.istouching("breakable")) { // make sure its the ground
+      vy = -500;
+    }
+    //}
+    
     player.setVelocity(vx, vy);
     
-    if (contacts.size() > 0) {
-      if (istouching("regwall") || istouching("bouncewall") || istouching("breakable")) {
-        dashcharged = true;
-      }
+    if (feet.istouching("regwall") || feet.istouching("bouncewall") || feet.istouching("breakable")) {
+      dashcharged = true;
     }
     
     
     // player animations
     
 
-    if (dashing == false && rightkey == false && leftkey == false && contacts.size() > 0 && shootcooldown <= 15) {
+    if (dashing == false && rightkey == false && leftkey == false && shootcooldown <= 15) {
       //idlegif.show();
-      if (istouching("regwall") || istouching("bouncewall") || istouching("breakable")) {
+      if (feet.istouching("regwall") || feet.istouching("bouncewall") || feet.istouching("breakable")) {
         action = idle;
       }
     }
-    if (dashing == false && rightkey == true && contacts.size() > 0 && shootcooldown <= 15 || dashing == false && leftkey == true && contacts.size() > 0 && shootcooldown <= 15) {
+    if (dashing == false && rightkey == true && shootcooldown <= 15 || dashing == false && leftkey == true && shootcooldown <= 15) {
       //walkgif.show();
-      if (istouching("regwall") || istouching("bouncewall") || istouching("breakable")) {
+      if (feet.istouching("regwall") || feet.istouching("bouncewall") || feet.istouching("breakable")) {
         action = walk;
       }
     }
-    if (contacts.size() <= 0 && dashing == false && shootcooldown <= 15) {
+    if (feet.istouching("regwall") == false && feet.istouching("bouncewall") == false && feet.istouching("breakable") == false) {
+      if (dashing == false && shootcooldown <= 15) {
       //jumpgif.show();
-      action = jump;
+        action = jump;
+      }
     }
     if (dashing == true && shootcooldown <= 15) {
       //dashgif.show();
@@ -129,7 +131,12 @@ class FPlayer extends FGameObject {
     if (canshoot == false) {
       shootcooldown -= 1;
       if (shootcooldown < 30 && shootcooldown > 10) {
-        player.setVelocity(0,0); // air stall after shooting
+        if (bombright) {
+          player.setVelocity(-20,-10);
+        }
+        else if (bombleft) {
+          player.setVelocity(20,-10); // air stall after shooting and momentum
+        }
       }
     }
   

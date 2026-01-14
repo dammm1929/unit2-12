@@ -41,6 +41,7 @@ PImage[] flop;
 PImage[] action;
 PImage[] crabwalk;
 PImage[] batfly;
+PImage background;
 
 int imgw = 45;
 int imgh = 50;
@@ -59,6 +60,7 @@ FBomb bomb;
 FWorld world;
 void setup() {
   size(1250,1000);
+  background = loadImage("stolen_background_idontcare.png");
   // gif order is (before, after, n, x, y, w, h)
   // n is frames !!!!!
   
@@ -164,17 +166,18 @@ void setup() {
   while (y < map.height) {
     // general stuff that apply to all blocks
     color c = map.get(x,y); // get a pixel's colour and coord
-    FBox b = new FBox(gridsize, gridsize); // (50,50)
+    FBox b = new FBox(gridsize+1, gridsize+1); // (50,50)
     b.setPosition(x*gridsize,y*gridsize); // so they're spaced properly
     b.setStatic(true); // dont fall
-    b.setStrokeWeight(3);
+    b.setNoStroke();
     
-    FBox d = new FBox(gridsize, gridsize/2); // spike boxes
+    FBox d = new FBox(gridsize+1, gridsize/2 + 1); // spike boxes
     d.setPosition(x*gridsize,y*gridsize + 15);
     d.setStatic(true);
     d.setStrokeWeight(3);
     
-    FBox e = new FBox(gridsize, gridsize-1); // breakable boxes
+    
+    FBox e = new FBox(gridsize + 1, gridsize-1 + 1); // breakable boxes
     e.setPosition(x*gridsize,y*gridsize);
     e.setStatic(true);
     e.setStrokeWeight(3);
@@ -182,13 +185,14 @@ void setup() {
     
     // individual traits for each block
     if (c == black) {
-      b.setFillColor(black);
+      b.setFillColor(#587655);
+      //b.setStroke(#587655);
       b.setName("regwall");
       world.add(b);
       regulars.add(b);
     }
     if (c == #7F7F7F) { // grayish on the map img
-      b.setFillColor(black);
+      b.setFillColor(#587655);
       b.setName("bouncewall");
       world.add(b);
       regulars.add(b);
@@ -238,13 +242,13 @@ void setup() {
   world.add(player);
 }
 void draw() {
-  background(#8BA2BF);
+  background(background);
   pushMatrix();
   translate(-player.getX() + width/2, -player.getY() + height/2);
   rectMode(CENTER);
   for (int i = 0; i < posX.size(); i++) {
-    fill(#171717);
-    noStroke();
+    fill(#4C6741);
+    stroke(#4C6741);
     square(posX.get(i), posY.get(i), gridsize);
   }
   
@@ -256,7 +260,7 @@ void draw() {
   player.movement();
   player.collision();
   //player.animate();
-  
+  println(bomb);
   if (bomb != null) bomb.explode();
   
   
