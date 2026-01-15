@@ -4,10 +4,12 @@ class FPlayer extends FGameObject {
   int fastframe;
   FBox playerbox;
   FGameObject feet;
+  FGameObject rightside;
+  FGameObject leftside;
   FPlayer() {
     super(20,40); // if i extend gameobject, the size proportions of player is off
     frame = 0;
-    setPosition(980,1100);
+    setPosition(4500,2200); // 980, 1100 default
     setNoFill();
     setStrokeWeight(3);
     setNoStroke();
@@ -20,8 +22,14 @@ class FPlayer extends FGameObject {
     playerbox.setSensor(true);
     feet = new FGameObject(13,5);
     feet.setSensor(true);
+    rightside = new FGameObject(10,35);
+    rightside.setSensor(true);
+    leftside = new FGameObject(10,35);
+    leftside.setSensor(true);
     world.add(playerbox);
     world.add(feet);
+    world.add(rightside);
+    world.add(leftside);
   }
   
   void playersprite() {
@@ -64,12 +72,42 @@ class FPlayer extends FGameObject {
     feet.setStrokeWeight(5);
   }
   
+  void sides() {
+    rightside.setPosition(getX()+10, getY());
+    rightside.setVelocity(this.getVelocityX(), this.getVelocityY());
+    rightside.setNoFill();
+    rightside.setNoStroke();
+    rightside.setStrokeWeight(2);
+
+    leftside.setPosition(getX()-10, getY());
+    leftside.setVelocity(this.getVelocityX(), this.getVelocityY());
+    leftside.setNoFill();
+    leftside.setNoStroke();
+    leftside.setStrokeWeight(2);
+  }
+  
   void movement() {
     playersprite();
     feet();
+    sides();
     if (leftkey == false && rightkey == false) vx = 0;
-    if (leftkey && nomovetimer == 8 && rightkey == false) vx = -300;
-    if (rightkey && nomovetimer == 8 && leftkey == false) vx = 300;
+    //if (leftkey && nomovetimer == 8 && rightkey == false) vx = -300; // moving left
+    //if (rightkey && nomovetimer == 8 && leftkey == false) vx = 300; // moving right
+    
+    if (rightside.istouching("regwall") == false && rightside.istouching("bouncewall") == false && rightside.istouching("breakable") == false) {
+      if (rightkey && nomovetimer == 8 && leftkey == false) vx = 300; // moving right
+    }
+    else if (rightside.istouching("regwall") || rightside.istouching("bouncewall") || rightside.istouching("breakable")) {
+      if (rightkey) vx = 0;
+    }
+    
+    if (leftside.istouching("regwall") == false && leftside.istouching("bouncewall") == false && leftside.istouching("breakable") == false) {
+      if (leftkey && nomovetimer == 8 && rightkey == false) vx = -300; // moving left
+    }
+    else if (leftside.istouching("regwall") || leftside.istouching("bouncewall") || leftside.istouching("breakable")) {
+      if (leftkey) vx = 0;
+    }
+
     vy = player.getVelocityY();
     
     // jumping
@@ -92,7 +130,6 @@ class FPlayer extends FGameObject {
     
     // player animations
     
-
     if (dashing == false && rightkey == false && leftkey == false && shootcooldown <= 15) {
       //idlegif.show();
       if (feet.istouching("regwall") || feet.istouching("bouncewall") || feet.istouching("breakable")) {

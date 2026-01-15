@@ -224,6 +224,10 @@ void setup() {
       enemies.add(fly);
     }
     
+    if (c == #004080) { // npc spawn (dark blueish)
+      FNPC npc = new FNPC(x*gridsize, y*gridsize);
+      world.add(npc);
+    }
     
     else if (c == outofbounds) {
       posX.append(x*gridsize);
@@ -260,7 +264,6 @@ void draw() {
   player.movement();
   player.collision();
   //player.animate();
-  println(bomb);
   if (bomb != null) bomb.explode();
   
   
