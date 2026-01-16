@@ -9,7 +9,7 @@ class FPlayer extends FGameObject {
   FPlayer() {
     super(20,40); // if i extend gameobject, the size proportions of player is off
     frame = 0;
-    setPosition(4500,2200); // 980, 1100 default
+    setPosition(5000,2300); // 980, 1100 default
     setNoFill();
     setStrokeWeight(3);
     setNoStroke();
@@ -267,7 +267,11 @@ class FPlayer extends FGameObject {
     if (istouching("fly")) {
       setPosition(900,1000);
     }
+    if (istouching("npc")) {
+      dialogue = true;
+    }
   }
+  
   
   
 }

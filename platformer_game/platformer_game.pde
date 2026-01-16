@@ -41,12 +41,13 @@ PImage[] flop;
 PImage[] action;
 PImage[] crabwalk;
 PImage[] batfly;
+PImage[] npc;
 PImage background;
 
 int imgw = 45;
 int imgh = 50;
 
-
+boolean dialogue = false;
 
 FloatList posX = new FloatList(), posY = new FloatList(); // for filling outside of the map
 
@@ -152,6 +153,11 @@ void setup() {
     batfly[n].resize(imgw+90,imgh+90);
   }
   
+  npc = new PImage[2];
+  npc[0] = loadImage("orange_" + 0 + ".png");
+  npc[1] = loadImage("orange_" + 1 + ".png");
+  npc[0].resize(imgw+30,imgh+30);
+  npc[1].resize(imgw+30, imgh+30);
 
   Fisica.init(this);
   world = new FWorld(-100,-300, 10000,10000);
@@ -227,6 +233,7 @@ void setup() {
     if (c == #004080) { // npc spawn (dark blueish)
       FNPC npc = new FNPC(x*gridsize, y*gridsize);
       world.add(npc);
+      enemies.add(npc);
     }
     
     else if (c == outofbounds) {
