@@ -43,13 +43,21 @@ PImage[] crabwalk;
 PImage[] batfly;
 PImage[] npc;
 PImage background;
+PImage rightedge;
+PImage leftedge;
+PImage middleground;
+PImage fillground;
 
 int imgw = 45;
 int imgh = 50;
 
 boolean dialogue = false;
+boolean info = false;
+
+int respawnx, respawny;
 
 FloatList posX = new FloatList(), posY = new FloatList(); // for filling outside of the map
+int mode = 1;
 
 //gif walkgif, jumpgif, flopgif, idlegif;
 //gif2 dashgif;
@@ -60,6 +68,8 @@ FPlayer player;
 FBomb bomb;
 FWorld world;
 void setup() {
+  respawnx = 980;
+  respawny = 1100;
   size(1250,1000);
   background = loadImage("stolen_background_idontcare.png");
   // gif order is (before, after, n, x, y, w, h)
@@ -158,6 +168,14 @@ void setup() {
   npc[1] = loadImage("orange_" + 1 + ".png");
   npc[0].resize(imgw+30,imgh+30);
   npc[1].resize(imgw+30, imgh+30);
+  
+  
+  // terrain images
+  rightedge = loadImage("rightedge.png");
+  leftedge = loadImage("leftedge.png");
+  middleground = loadImage("middleground.png");
+  fillground = loadImage("fillground.png");
+  
 
   Fisica.init(this);
   world = new FWorld(-100,-300, 10000,10000);
@@ -170,6 +188,13 @@ void setup() {
   
   //loading the world up  
   while (y < map.height) {
+    
+    color current = map.get(x, y);
+    //color south = map.get(x, y+1);
+    //color west = map.get(x-1, y);
+    //color east = map.get(x+1, y);
+    
+    
     // general stuff that apply to all blocks
     color c = map.get(x,y); // get a pixel's colour and coord
     FBox b = new FBox(gridsize+1, gridsize+1); // (50,50)
@@ -182,23 +207,46 @@ void setup() {
     d.setStatic(true);
     d.setStrokeWeight(3);
     
-    
     FBox e = new FBox(gridsize + 1, gridsize-1 + 1); // breakable boxes
     e.setPosition(x*gridsize,y*gridsize);
     e.setStatic(true);
     e.setStrokeWeight(3);
     
+    FBox f = new FBox(gridsize+1, gridsize+1);
+    f.setPosition(x*gridsize, y*gridsize);
+    f.setStatic(true);
+    f.setSensor(true);
+    f.setFillColor(#7AF7F6);
+    f.setStrokeWeight(6);
+    f.setStroke(255);
+
     
     // individual traits for each block
+    
+    
     if (c == black) {
-      b.setFillColor(#587655);
-      //b.setStroke(#587655);
+      // b.setFillColor(#587655)
+      if (map.get(x, y+1) == black && map.get(x+1, y) == black && map.get(x-y, y) == black && map.get(x, y-1) != black) b.attachImage(middleground); // if bottom is black
+      else if (map.get(x+1, y) == black && map.get(x-1, y) != black && map.get(x, y-1) != black) b.attachImage(leftedge); // left
+      else if (map.get(x-1, y) == black && map.get(x+1, y) != black && map.get(x, y-1) != black) b.attachImage(rightedge); // right
+      else if (map.get(x-1, y) == #7F7F7F && map.get(x, y-1) != black) b.attachImage(middleground); // if breakable on side
+      else if (map.get(x+1, y) == #7F7F7F && map.get(x, y-1) != black) b.attachImage(middleground);
+      else if (map.get(x, y-1) == black || map.get(x, y-1) == #7F7F7F) b.attachImage(fillground);// if smt above
+      else if (map.get(x+1, y) == black && map.get(x-1, y) == black) b.attachImage(middleground); // platforms
       b.setName("regwall");
       world.add(b);
       regulars.add(b);
     }
+
+    
     if (c == #7F7F7F) { // grayish on the map img
-      b.setFillColor(#587655);
+      // b.setFillColor(#587655)
+      if (map.get(x, y+1) == black && map.get(x+1, y) == black && map.get(x-y, y) == black && map.get(x, y-1) != black) b.attachImage(middleground); // if bottom is black
+      else if (map.get(x+1, y) == black && map.get(x-1, y) != black && map.get(x, y-1) != black) b.attachImage(leftedge); // left
+      else if (map.get(x-1, y) == black && map.get(x+1, y) != black && map.get(x, y-1) != black) b.attachImage(rightedge); // right
+      else if (map.get(x, y-1) == black) b.attachImage(fillground);// if smt above
+      else if (map.get(x+1, y) == black && map.get(x-1, y) == black) b.attachImage(middleground); // platforms
+
       b.setName("bouncewall");
       world.add(b);
       regulars.add(b);
@@ -236,6 +284,24 @@ void setup() {
       enemies.add(npc);
     }
     
+    if (c == #00FFFF) { // respawn 1
+      f.setName("respawn1");
+      world.add(f);
+      regulars.add(f);
+    }
+    
+    if (c == #00FFFE) { // respawn 2
+      f.setName("respawn2");
+      world.add(f);
+      regulars.add(f);
+    }
+    
+    if (c == #00FFFD) {
+      f.setName("respawn3");
+      world.add(f);
+      regulars.add(f);
+    }
+    
     else if (c == outofbounds) {
       posX.append(x*gridsize);
       posY.append(y*gridsize);
@@ -253,37 +319,23 @@ void setup() {
   world.add(player);
 }
 void draw() {
-  background(background);
-  pushMatrix();
-  translate(-player.getX() + width/2, -player.getY() + height/2);
-  rectMode(CENTER);
-  for (int i = 0; i < posX.size(); i++) {
-    fill(#4C6741);
-    stroke(#4C6741);
-    square(posX.get(i), posY.get(i), gridsize);
+  // mode framework
+  if (mode == 1) {
+    intro();
+  } else if (mode == 2) {
+    game();
   }
-  
-  world.step();
-  world.draw();
-  popMatrix();
-  //updateplayer();
-  //updateterrain();
-  player.movement();
-  player.collision();
-  //player.animate();
-  if (bomb != null) bomb.explode();
-  
-  
-  for (int i = 0; i < enemies.size(); i++) {
-    FGameObject e = enemies.get(i);
-    e.act();
+
+}
+
+void mousePressed() {
+  if (mouseX > 500 && mouseX < 700 && mouseY > 400 && mouseY < 500 && mode == 1) { // start button
+    mode = 2;
   }
 }
 
-void updateplayer() {
-  
-}
-
-void updateterrain() {
-  
+void tactile(int x, int y) {
+  if (mouseX > 500 && mouseX < 700 && mouseY > 400 && mouseY < 500) {
+    fill(#C6C6C6);
+  }
 }

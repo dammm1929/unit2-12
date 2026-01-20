@@ -38,7 +38,7 @@ class FBomb extends FGameObject {
     front.setVelocity(this.getVelocityX(), this.getVelocityY());
     front.setNoFill();
     //front.setNoStroke();
-    front.setStroke(255);
+    front.setNoStroke();
     front.setStrokeWeight(5);
     if (bombright) front.setPosition(getX()+35, getY());
     if (bombleft) front.setPosition(getX()-35, getY());

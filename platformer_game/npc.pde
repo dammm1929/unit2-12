@@ -1,5 +1,6 @@
 class FNPC extends FGameObject {
   int talktimer = 0;
+  int infotimer = 0;
   float blackbar1 = -630;
   float blackbar2 = -630;
   float blackbar3 = -630;
@@ -30,10 +31,10 @@ class FNPC extends FGameObject {
       strokeWeight(10);
       stroke(255);
       fill(0);
+      
+
+      
       rect(width/2,height/2-300,700,300);
-      
-      
-      println(talktimer);
       fill(255);
       textSize(30);
       text("yo whats up can you help me find something", width/2-300, height/2-400);
@@ -50,7 +51,7 @@ class FNPC extends FGameObject {
       stroke(0);
       rectMode(CORNER);
       
-      if (talktimer <= 650) talktimer += 1;
+      if (talktimer <= 700) talktimer += 1;
       if (talktimer >= 0 && talktimer <= 65) {
         blackbar1 += 10;
       }
@@ -67,7 +68,12 @@ class FNPC extends FGameObject {
         blackbar5 += 10;
       }
       
-      if (talktimer >= 650) dialogue = false;
+      textSize(80);
+      if (talktimer >= 600 && talktimer <= 701) text("(chogglidippy does not exist)", width/2-350, height/2+300);
+   
+      if (talktimer >= 700) {
+        dialogue = false;
+      }
       
       rect(width/2+300, height/2-420, blackbar1, 50);
       rect(width/2+300, height/2-360, blackbar2, 50);
@@ -77,6 +83,7 @@ class FNPC extends FGameObject {
       
     }
     
+
     npcsprite();
 
     

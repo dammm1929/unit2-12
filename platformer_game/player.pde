@@ -1,5 +1,4 @@
 class FPlayer extends FGameObject {
- 
   int frame;
   int fastframe;
   FBox playerbox;
@@ -7,9 +6,9 @@ class FPlayer extends FGameObject {
   FGameObject rightside;
   FGameObject leftside;
   FPlayer() {
-    super(20,40); // if i extend gameobject, the size proportions of player is off
+    super(20,40);
     frame = 0;
-    setPosition(5000,2300); // 980, 1100 default
+    setPosition(respawnx, respawny); // 980, 1100 default
     setNoFill();
     setStrokeWeight(3);
     setNoStroke();
@@ -254,24 +253,62 @@ class FPlayer extends FGameObject {
   } // end of movement function
   
   
-  
+  boolean checkpoint1;
+  boolean checkpoint2;
+  boolean checkpoint3;
   void collision() {
     if (istouching("spike")) {
-      setPosition(900,1000);
+      setPosition(respawnx,respawny);
     }
     
     if (istouching("goomba")) {
-      setPosition(900,1000);
+      setPosition(respawnx,respawny);
     }
     
     if (istouching("fly")) {
-      setPosition(900,1000);
+      setPosition(respawnx,respawny);
     }
+    
     if (istouching("npc")) {
       dialogue = true;
     }
+    
+    if (istouching("respawn1")) { // 72, 47
+      checkpoint1 = true;
+      checkpoint2 = false;
+      checkpoint3 = false;
+    }
+    if (istouching("respawn2")) { // 56, 34
+      checkpoint1 = false;
+      checkpoint2 = true;
+      checkpoint3 = false;
+    }
+    if (istouching("respawn3")) { // 54, 15
+      checkpoint1 = false;
+      checkpoint2 = false;
+      checkpoint3 = true;
+    }
+    
+    if (checkpoint1 == true) {
+      respawnx = 3600;
+      respawny = 2350;
+    }
+    if (checkpoint2 == true) {
+      respawnx = 2800;
+      respawny = 1700;
+    }
+    if (checkpoint3 == true) {
+      respawnx = 2700;
+      respawny = 750;
+    }
+    if (checkpoint1 == false && checkpoint2 == false && checkpoint3 == false) {
+      respawnx = 980;
+      respawny = 1500;
+    }
+    
   }
-  
+    
+
   
   
 }

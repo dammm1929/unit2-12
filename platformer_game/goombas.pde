@@ -46,10 +46,15 @@ class FGoomba extends FGameObject {
       dir *= -1;
       setPosition(getX() + dir, getY());
     }
+    if (this.istouching("bomb")) {
+      world.remove(this);
+      enemies.remove(this);
+    }
   }
   
   void move() {
     float vy = getVelocityY();
     setVelocity(speed*dir, vy);
   }
+  
 }

@@ -36,6 +36,7 @@ class Ffly extends FGameObject {
     detection();
     move();
     enemysprite();
+    collision();
     if (state == idle) {
       waiting();
     }
@@ -119,6 +120,8 @@ class Ffly extends FGameObject {
   void collision() {
     
     if (this.istouching("bomb")) {
+      world.remove(this);
+      enemies.remove(this);
       // UNFINISHED!!!! COLLISION WITH BOMB TO DESPAWN
 
     }
