@@ -312,15 +312,3 @@ class FPlayer extends FGameObject {
   
   
 }
-
-//void playerbottom() {
-//  playerbottom = new FBox(18,1);
-//  playerbottom.setPosition(player.getX()+1, player.getY()+41);
-//  playerbottom.setNoFill();
-//  playerbottom.setNoStroke();
-//  playerbottom.setRestitution(0);
-//  playerbottom.setDensity(1);
-//  playerbottom.setGrabbable(false);
-//  playerbottom.setRotatable(false);
-//  world.add(playerbottom);
-//}

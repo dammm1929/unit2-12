@@ -1,15 +1,3 @@
-// TO DO LIST
-
-// fix fireball from disappearing on normal ground
-// make breakable blocks despawn after a while
-// fix the wall jumping (get rid of it)
-// make enemies work
-// get textures for terrain and enemies
-
-// question 2: how to stop gif from looping and hold a single frame (jump)
-
-
-
 import fisica.*;
 
 // platformer game 
@@ -70,7 +58,8 @@ FWorld world;
 void setup() {
   respawnx = 980;
   respawny = 1100;
-  size(1250,1000);
+  size(1250,1000, JAVA2D);
+  noSmooth();
   background = loadImage("stolen_background_idontcare.png");
   // gif order is (before, after, n, x, y, w, h)
   // n is frames !!!!!
@@ -190,11 +179,7 @@ void setup() {
   while (y < map.height) {
     
     color current = map.get(x, y);
-    //color south = map.get(x, y+1);
-    //color west = map.get(x-1, y);
-    //color east = map.get(x+1, y);
-    
-    
+   
     // general stuff that apply to all blocks
     color c = map.get(x,y); // get a pixel's colour and coord
     FBox b = new FBox(gridsize+1, gridsize+1); // (50,50)
@@ -223,9 +208,11 @@ void setup() {
     
     // individual traits for each block
     
-    
     if (c == black) {
-      // b.setFillColor(#587655)
+      
+      b.setFillColor(#587655);
+       
+      // textures
       if (map.get(x, y+1) == black && map.get(x+1, y) == black && map.get(x-y, y) == black && map.get(x, y-1) != black) b.attachImage(middleground); // if bottom is black
       else if (map.get(x+1, y) == black && map.get(x-1, y) != black && map.get(x, y-1) != black) b.attachImage(leftedge); // left
       else if (map.get(x-1, y) == black && map.get(x+1, y) != black && map.get(x, y-1) != black) b.attachImage(rightedge); // right
@@ -233,19 +220,24 @@ void setup() {
       else if (map.get(x+1, y) == #7F7F7F && map.get(x, y-1) != black) b.attachImage(middleground);
       else if (map.get(x, y-1) == black || map.get(x, y-1) == #7F7F7F) b.attachImage(fillground);// if smt above
       else if (map.get(x+1, y) == black && map.get(x-1, y) == black) b.attachImage(middleground); // platforms
+      else if (map.get(x+1, y) != black && map.get(x-1, y) != black) b.attachImage(middleground); // platforms
+      
       b.setName("regwall");
       world.add(b);
       regulars.add(b);
     }
 
-    
     if (c == #7F7F7F) { // grayish on the map img
-      // b.setFillColor(#587655)
-      if (map.get(x, y+1) == black && map.get(x+1, y) == black && map.get(x-y, y) == black && map.get(x, y-1) != black) b.attachImage(middleground); // if bottom is black
+    
+      b.setFillColor(#587655);
+      
+      // textures
+      if (map.get(x, y+1) == black && map.get(x+1, y) == black && map.get(x-y, y) == black && map.get(x, y-1) != black) b.attachImage(middleground); // if top is not black
       else if (map.get(x+1, y) == black && map.get(x-1, y) != black && map.get(x, y-1) != black) b.attachImage(leftedge); // left
       else if (map.get(x-1, y) == black && map.get(x+1, y) != black && map.get(x, y-1) != black) b.attachImage(rightedge); // right
       else if (map.get(x, y-1) == black) b.attachImage(fillground);// if smt above
       else if (map.get(x+1, y) == black && map.get(x-1, y) == black) b.attachImage(middleground); // platforms
+      else if (map.get(x+1,y) == black && map.get(x-1,y) != black && map.get(x, y-1) == black) b.attachImage(fillground);
 
       b.setName("bouncewall");
       world.add(b);
